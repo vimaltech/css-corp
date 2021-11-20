@@ -42,3 +42,5 @@
 // let             No           yes         No          yes
 
 // const           No           yes         No          No
+
+// Note: constant will occupy less memory compare to var and let
