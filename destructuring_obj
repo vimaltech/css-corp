@@ -1,0 +1,23 @@
+const obj = {
+    a: 1,
+    b: 2
+}
+
+// dot notation
+console.log(obj.a);
+console.log(obj.b);
+
+// array notation
+// when key is coming dynamically that time we use array notation
+const key = 'a';
+console.log(obj[key]);
+console.log(obj['b']);
+
+const a = 5;
+
+// destructuring
+const { a: aa, b } = obj;
+
+console.log(a);
+console.log(aa);
+console.log(b);

@@ -1,0 +1,27 @@
+const obj = {
+    a: 1,
+    b: 2
+}
+
+// Mutable Approach
+// obj.c = 3
+// console.log(obj);
+
+// immutableApproach
+// ES5+
+// const newObj = Object.assign({}, obj, {c: 3})
+// console.log(newObj);
+
+// ES6+
+// "..." is called spread operator
+// to update existing property add it after spread operator
+const newObj = {...obj, c: 3};
+console.log(newObj);
+
+// const newObj1 = {...obj, a: 3};
+
+// console.log(newObj1);
+// to add new Property add it b4 spread operator
+const newObj2 = {c: 3, ...obj};
+
+console.log(newObj2);

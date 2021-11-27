@@ -1,0 +1,31 @@
+const obj = {
+    a: 1,
+    b: 2,
+    c: 3
+}
+
+// obj = {};
+
+const {c, b, ...rest} = obj;
+console.log(c);
+console.log(b);
+console.log(rest);
+
+// delete obj.c;
+
+// console.log(obj);
+
+const user = {
+    id: 1,
+    name: 'yagnesh',
+    age: 30
+}
+
+
+// 1. add new property gender 
+// 2. change value of age from 30 to 33
+// 3. delete id property from object
+
+
+
+

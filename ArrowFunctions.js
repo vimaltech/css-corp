@@ -16,6 +16,6 @@ const add = (a, b) => a + b;
 console.log(add(1, 2));
 
 // with one parameter no need to write wrapper parameter brackets
-const greet = (name) => "hello, " + name;
+const greet = name => "hello, " + name;
 
 console.log(greet("Yagnesh"));
