@@ -85,6 +85,10 @@ console.log(hasSeniorCitizen);
 
 // 1. Find the user whoes name start with y
 
+const yUser = users.find(item => item.name.slice(0, 1)  === 'Y');
+
+console.log(yUser);
+
 // 2. find the index who is male and age 32
 
 // 3. check we have user age between 30 and 40
