@@ -1,28 +1,43 @@
-export const a = 'Hello from app.js';
+import React, { Component } from 'react';
+import PropTypes from 'prop-types';
 
-export const b = 'i am from app.js';
+class App extends Component {
+  static propTypes = {
+    title: PropTypes.string.isRequired,
+    caption: PropTypes.string,
+  };
 
-export const c = ' i am c from app.js';
+  static defaultProps = {
+    caption: 'Great day...',
+  };
 
-export const d = a ?? b;
+  test() {}
 
-export const obj = {
-  a: 1,
-  b: 2,
-  c() {
-    console.log('Obj', this);
-  },
-};
+  render() {
+    const { title, caption } = this.props;
+    return (
+      <>
+        <h1>{title}</h1>
+        <h2>{caption}</h2>
+      </>
+    );
+  }
+}
 
-export const obj1 = {
-  a: 1,
-  b: 2,
-  c: () => {
-    console.log('obj1', this);
-  },
-};
+// const App = ({ title, caption }) => (
+//   <>
+//     <h1>{title}</h1>
+//     <h2>{caption}</h2>
+//   </>
+// );
 
-// per file only export default allowed
-export default {
-  a, b, c, obj, obj1,
-};
+// App.propTypes = {
+//   title: PropTypes.string.isRequired,
+//   caption: PropTypes.string,
+// };
+
+// App.defaultProps = {
+//   caption: 'Great day...',
+// };
+
+export default App;

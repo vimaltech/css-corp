@@ -1,5 +1,6 @@
-import React, { Component } from 'react';
+import React from 'react';
 import ReactDOM from 'react-dom';
+import App from './App';
 
 // Components
 // 1. function components
@@ -25,23 +26,23 @@ import ReactDOM from 'react-dom';
 //   );
 // };
 
-class App extends Component {
-  render() {
-    const { title, caption } = this.props;
-    return (
-      <>
-        <h1>{title}</h1>
-        <h2>{caption}</h2>
-      </>
-    );
-  }
-}
+// class App extends Component {
+//   render() {
+//     const { title, caption } = this.props;
+//     return (
+//       <>
+//         <h1>{title}</h1>
+//         <h2>{caption}</h2>
+//       </>
+//     );
+//   }
+// }
 
 ReactDOM.render(
   <div>
     <h1>Hello from React</h1>
     <input type="checkbox" />
-    <App title="Good Morning" caption="have a great day." />
+    <App title="Good Morning" />
   </div>,
   document.getElementById('root'),
 );
