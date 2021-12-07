@@ -11,14 +11,16 @@ module.exports = {
   module: {
     rules: [
       {
-        test: /\.js$/,
+        test: /\.jsx?$/,
         exclude: /node_modules/,
         use: 'babel-loader',
       },
     ],
   },
-  plugins: [new HtmlWebpackPlugin({
-    template: './public/index.html',
-    filename: 'index.html',
-  })],
+  plugins: [
+    new HtmlWebpackPlugin({
+      template: './public/index.html',
+      filename: 'index.html',
+    }),
+  ],
 };
