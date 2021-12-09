@@ -1,4 +1,4 @@
-import React from 'react';
+import React, { memo } from 'react';
 
 const Child1 = () => {
   console.log('Child 1 render');
@@ -9,4 +9,9 @@ const Child1 = () => {
   );
 };
 
-export default Child1;
+export default memo(Child1, (prevProps, nextProps) => {
+  if (nextProps.counter > prevProps.counter) {
+    return false;
+  }
+  return true;
+});
