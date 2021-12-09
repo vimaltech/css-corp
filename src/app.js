@@ -29,8 +29,11 @@ import Child1 from './Child1';
 // -> componentDidUpdate
 
 // 3. UnMounting
+// -> componentWillUnmount(M - IMP)
 
 // 4. Error
+// -> getDerivedStateFromError
+// -> componentDidCatch
 
 class App extends Component {
   // 1. base on props value derive state value
@@ -83,6 +86,18 @@ class App extends Component {
     console.log(snapshot);
   }
 
+  static getDerivedStateFromError(error) {
+    return {
+      error,
+    };
+  }
+
+  componentDidCatch(error, info) {
+    // log the errors
+    console.log(error);
+    console.log(info);
+  }
+
   // state = {
   //   i: 0,
   // };
@@ -114,7 +129,12 @@ class App extends Component {
 
   // convert html into DOM
   render() {
-    const { i, greet, user } = this.state;
+    const { i, greet, user, error } = this.state;
+
+    if (error) {
+      return <h1>{error.message}</h1>;
+    }
+
     return (
       <>
         <h1 id="heading">{greet}</h1>
@@ -135,7 +155,7 @@ class App extends Component {
         </button>
         <h2>{user.name}</h2>
         <Child1 counter={i} />
-        <Child2 user={user} />
+        {i < 5 && <Child2 user={user} />}
         <button type="button" onClick={this.changeUserName}>
           Change Username
         </button>
