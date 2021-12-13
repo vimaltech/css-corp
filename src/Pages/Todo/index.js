@@ -4,6 +4,7 @@ import './todoStyle.css';
 export default class Todo extends Component {
   state = {
     todoList: [],
+    filterType: 'all',
   };
 
   inputRef = createRef();
@@ -27,21 +28,37 @@ export default class Todo extends Component {
   };
 
   toggleComplete = (item) => {
-    console.log(item);
+    // O(N)
+    this.setState(({ todoList }) => {
+      const index = todoList.findIndex((x) => x.id === item.id);
+      return {
+        todoList: [
+          ...todoList.slice(0, index),
+          { ...item, isDone: !item.isDone },
+          ...todoList.slice(index + 1),
+        ],
+      };
+    });
+  };
 
-    this.setState(({ todoList }) => ({
-      todoList: todoList.map((x) => {
-        if (x.id === item.id) {
-          return { ...x, isDone: !x.isDone };
-        }
-        return x;
-      }),
-    }));
+  deleteTodo = (item) => {
+    this.setState(({ todoList }) => {
+      const index = todoList.findIndex((x) => x.id === item.id);
+      return {
+        todoList: [...todoList.slice(0, index), ...todoList.slice(index + 1)],
+      };
+    });
+  };
+
+  handleFilter = (filterType) => {
+    this.setState({
+      filterType,
+    });
   };
 
   render() {
     console.log('render');
-    const { todoList } = this.state;
+    const { todoList, filterType } = this.state;
     return (
       <div className="container">
         <h1>Todo App</h1>
@@ -50,28 +67,47 @@ export default class Todo extends Component {
           <button type="submit">Add Todo</button>
         </form>
         <div className="todo-list">
-          {todoList.map((item) => (
-            <div className="todo-item" key={item.id}>
-              <input
-                type="checkbox"
-                checked={item.isDone}
-                onChange={() => this.toggleComplete(item)}
-              />
-              <p
-                style={{
-                  textDecoration: item.isDone ? 'line-through' : 'none',
-                }}
-              >
-                {item.text}
-              </p>
-              <button type="button">Delete</button>
-            </div>
-          ))}
+          {todoList
+            .filter((x) => {
+              switch (filterType) {
+                case 'pending':
+                  return !x.isDone;
+                case 'completed':
+                  return x.isDone;
+                default:
+                  return true;
+              }
+            })
+            .map((item) => (
+              <div className="todo-item" key={item.id}>
+                <input
+                  type="checkbox"
+                  checked={item.isDone}
+                  onChange={() => this.toggleComplete(item)}
+                />
+                <p
+                  style={{
+                    textDecoration: item.isDone ? 'line-through' : 'none',
+                  }}
+                >
+                  {item.text}
+                </p>
+                <button type="button" onClick={() => this.deleteTodo(item)}>
+                  Delete
+                </button>
+              </div>
+            ))}
         </div>
         <div className="filter-section">
-          <button type="button">All</button>
-          <button type="button">Pending</button>
-          <button type="button">Completed</button>
+          <button type="button" onClick={() => this.handleFilter('all')}>
+            All
+          </button>
+          <button type="button" onClick={() => this.handleFilter('pending')}>
+            Pending
+          </button>
+          <button type="button" onClick={() => this.handleFilter('completed')}>
+            Completed
+          </button>
         </div>
       </div>
     );
