@@ -19,6 +19,7 @@ export default class Todo extends Component {
           ...todoList,
           { id: new Date().valueOf(), text: todoText, isDone: false },
         ],
+        filterType: 'all',
       }),
       () => {
         // document.getElementById('todoText').value = '';
@@ -99,13 +100,31 @@ export default class Todo extends Component {
             ))}
         </div>
         <div className="filter-section">
-          <button type="button" onClick={() => this.handleFilter('all')}>
+          <button
+            type="button"
+            style={{
+              borderColor: filterType === 'all' ? 'red' : 'gray',
+            }}
+            onClick={() => this.handleFilter('all')}
+          >
             All
           </button>
-          <button type="button" onClick={() => this.handleFilter('pending')}>
+          <button
+            type="button"
+            style={{
+              borderColor: filterType === 'pending' ? 'red' : 'gray',
+            }}
+            onClick={() => this.handleFilter('pending')}
+          >
             Pending
           </button>
-          <button type="button" onClick={() => this.handleFilter('completed')}>
+          <button
+            type="button"
+            style={{
+              borderColor: filterType === 'completed' ? 'red' : 'gray',
+            }}
+            onClick={() => this.handleFilter('completed')}
+          >
             Completed
           </button>
         </div>
