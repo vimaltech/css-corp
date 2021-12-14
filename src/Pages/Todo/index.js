@@ -7,9 +7,20 @@ export default class Todo extends PureComponent {
   state = {
     todoList: [],
     filterType: 'all',
+    error: null,
   };
 
   inputRef = createRef();
+
+  async componentDidMount() {
+    try {
+      const res = await fetch('http://localhost:3000/todo-list');
+      const json = await res.json();
+      this.setState({ todoList: json });
+    } catch (error) {
+      this.setState({ error });
+    }
+  }
 
   addTodo = (event) => {
     event.preventDefault();
@@ -59,15 +70,19 @@ export default class Todo extends PureComponent {
 
   render() {
     console.log('render');
-    const { filterType } = this.state;
+    const { todoList, filterType, error } = this.state;
     return (
       <div className="h-screen flex flex-col sm:bg-green-300 bg-slate-200">
+        {error && (
+          <h1 className="text-center text-red-700">Something went wrong</h1>
+        )}
         <h1 className="text-4xl text-center my-4 font-bold text-red-400">
           Todo App
         </h1>
         <TodoForm addTodo={this.addTodo} ref={this.inputRef} />
         <TodoList
-          {...this.state}
+          filterType={filterType}
+          todoList={todoList}
           toggleComplete={this.toggleComplete}
           deleteTodo={this.deleteTodo}
         />
