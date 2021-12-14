@@ -1,7 +1,9 @@
-import React, { Component, createRef } from 'react';
-import cn from 'classnames';
+import React, { PureComponent, createRef } from 'react';
+import TodoFilter from './todoFilter';
+import TodoForm from './todoForm';
+import TodoList from './todoList';
 
-export default class Todo extends Component {
+export default class Todo extends PureComponent {
   state = {
     todoList: [],
     filterType: 'all',
@@ -11,7 +13,6 @@ export default class Todo extends Component {
 
   addTodo = (event) => {
     event.preventDefault();
-    // const todoText = document.getElementById('todoText').value;
     const todoText = this.inputRef.current.value;
     this.setState(
       ({ todoList }) => ({
@@ -22,7 +23,6 @@ export default class Todo extends Component {
         filterType: 'all',
       }),
       () => {
-        // document.getElementById('todoText').value = '';
         this.inputRef.current.value = '';
       },
     );
@@ -59,82 +59,19 @@ export default class Todo extends Component {
 
   render() {
     console.log('render');
-    const { todoList, filterType } = this.state;
+    const { filterType } = this.state;
     return (
       <div className="h-screen flex flex-col sm:bg-green-300 bg-slate-200">
         <h1 className="text-4xl text-center my-4 font-bold text-red-400">
           Todo App
         </h1>
-        <form onSubmit={this.addTodo} className="flex justify-center my-4">
-          <input type="text" ref={this.inputRef} />
-          <button type="submit" className="btn-primary">
-            Add Todo
-          </button>
-        </form>
-        <div className="flex-1">
-          {todoList
-            .filter((x) => {
-              switch (filterType) {
-                case 'pending':
-                  return !x.isDone;
-                case 'completed':
-                  return x.isDone;
-                default:
-                  return true;
-              }
-            })
-            .map((item) => (
-              <div className="flex items-center m-4" key={item.id}>
-                <input
-                  type="checkbox"
-                  checked={item.isDone}
-                  onChange={() => this.toggleComplete(item)}
-                />
-                <p
-                  className={cn('flex-1 px-4 ', {
-                    'line-through': item.isDone,
-                  })}
-                >
-                  {item.text}
-                </p>
-                <button type="button" onClick={() => this.deleteTodo(item)}>
-                  Delete
-                </button>
-              </div>
-            ))}
-        </div>
-        <div className="flex">
-          <button
-            type="button"
-            className="flex-1 btn-primary"
-            style={{
-              borderColor: filterType === 'all' ? 'red' : 'gray',
-            }}
-            onClick={() => this.handleFilter('all')}
-          >
-            All
-          </button>
-          <button
-            type="button"
-            className="flex-1 btn-primary"
-            style={{
-              borderColor: filterType === 'pending' ? 'red' : 'gray',
-            }}
-            onClick={() => this.handleFilter('pending')}
-          >
-            Pending
-          </button>
-          <button
-            type="button"
-            className="flex-1 btn-primary"
-            style={{
-              borderColor: filterType === 'completed' ? 'red' : 'gray',
-            }}
-            onClick={() => this.handleFilter('completed')}
-          >
-            Completed
-          </button>
-        </div>
+        <TodoForm addTodo={this.addTodo} ref={this.inputRef} />
+        <TodoList
+          {...this.state}
+          toggleComplete={this.toggleComplete}
+          deleteTodo={this.deleteTodo}
+        />
+        <TodoFilter filterType={filterType} handleFilter={this.handleFilter} />
       </div>
     );
   }
