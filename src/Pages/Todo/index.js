@@ -1,5 +1,5 @@
 import React, { Component, createRef } from 'react';
-import './todoStyle.css';
+import cn from 'classnames';
 
 export default class Todo extends Component {
   state = {
@@ -61,13 +61,17 @@ export default class Todo extends Component {
     console.log('render');
     const { todoList, filterType } = this.state;
     return (
-      <div className="container">
-        <h1>Todo App</h1>
-        <form onSubmit={this.addTodo}>
+      <div className="h-screen flex flex-col sm:bg-green-300 bg-slate-200">
+        <h1 className="text-4xl text-center my-4 font-bold text-red-400">
+          Todo App
+        </h1>
+        <form onSubmit={this.addTodo} className="flex justify-center my-4">
           <input type="text" ref={this.inputRef} />
-          <button type="submit">Add Todo</button>
+          <button type="submit" className="btn-primary">
+            Add Todo
+          </button>
         </form>
-        <div className="todo-list">
+        <div className="flex-1">
           {todoList
             .filter((x) => {
               switch (filterType) {
@@ -80,16 +84,16 @@ export default class Todo extends Component {
               }
             })
             .map((item) => (
-              <div className="todo-item" key={item.id}>
+              <div className="flex items-center m-4" key={item.id}>
                 <input
                   type="checkbox"
                   checked={item.isDone}
                   onChange={() => this.toggleComplete(item)}
                 />
                 <p
-                  style={{
-                    textDecoration: item.isDone ? 'line-through' : 'none',
-                  }}
+                  className={cn('flex-1 px-4 ', {
+                    'line-through': item.isDone,
+                  })}
                 >
                   {item.text}
                 </p>
@@ -99,9 +103,10 @@ export default class Todo extends Component {
               </div>
             ))}
         </div>
-        <div className="filter-section">
+        <div className="flex">
           <button
             type="button"
+            className="flex-1 btn-primary"
             style={{
               borderColor: filterType === 'all' ? 'red' : 'gray',
             }}
@@ -111,6 +116,7 @@ export default class Todo extends Component {
           </button>
           <button
             type="button"
+            className="flex-1 btn-primary"
             style={{
               borderColor: filterType === 'pending' ? 'red' : 'gray',
             }}
@@ -120,6 +126,7 @@ export default class Todo extends Component {
           </button>
           <button
             type="button"
+            className="flex-1 btn-primary"
             style={{
               borderColor: filterType === 'completed' ? 'red' : 'gray',
             }}
