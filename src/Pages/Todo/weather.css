@@ -1,0 +1,10 @@
+.foreCastResult {
+    display: flex;
+    flex-direction: column;
+    margin-top: 20px;
+}
+
+.foreCastResult > div {
+    text-align: center;
+    padding: 5px;
+}
