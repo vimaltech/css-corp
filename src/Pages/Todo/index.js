@@ -1,17 +1,29 @@
-import React, { Component, createRef } from 'react';
-import './todoStyle.css';
+import React, { PureComponent, createRef } from 'react';
+import TodoFilter from './todoFilter';
+import TodoForm from './todoForm';
+import TodoList from './todoList';
 
-export default class Todo extends Component {
+export default class Todo extends PureComponent {
   state = {
     todoList: [],
     filterType: 'all',
+    error: null,
   };
 
   inputRef = createRef();
 
+  async componentDidMount() {
+    try {
+      const res = await fetch('http://localhost:3000/todo-list');
+      const json = await res.json();
+      this.setState({ todoList: json });
+    } catch (error) {
+      this.setState({ error });
+    }
+  }
+
   addTodo = (event) => {
     event.preventDefault();
-    // const todoText = document.getElementById('todoText').value;
     const todoText = this.inputRef.current.value;
     this.setState(
       ({ todoList }) => ({
@@ -22,7 +34,6 @@ export default class Todo extends Component {
         filterType: 'all',
       }),
       () => {
-        // document.getElementById('todoText').value = '';
         this.inputRef.current.value = '';
       },
     );
@@ -59,75 +70,23 @@ export default class Todo extends Component {
 
   render() {
     console.log('render');
-    const { todoList, filterType } = this.state;
+    const { todoList, filterType, error } = this.state;
     return (
-      <div className="container">
-        <h1>Todo App</h1>
-        <form onSubmit={this.addTodo}>
-          <input type="text" ref={this.inputRef} />
-          <button type="submit">Add Todo</button>
-        </form>
-        <div className="todo-list">
-          {todoList
-            .filter((x) => {
-              switch (filterType) {
-                case 'pending':
-                  return !x.isDone;
-                case 'completed':
-                  return x.isDone;
-                default:
-                  return true;
-              }
-            })
-            .map((item) => (
-              <div className="todo-item" key={item.id}>
-                <input
-                  type="checkbox"
-                  checked={item.isDone}
-                  onChange={() => this.toggleComplete(item)}
-                />
-                <p
-                  style={{
-                    textDecoration: item.isDone ? 'line-through' : 'none',
-                  }}
-                >
-                  {item.text}
-                </p>
-                <button type="button" onClick={() => this.deleteTodo(item)}>
-                  Delete
-                </button>
-              </div>
-            ))}
-        </div>
-        <div className="filter-section">
-          <button
-            type="button"
-            style={{
-              borderColor: filterType === 'all' ? 'red' : 'gray',
-            }}
-            onClick={() => this.handleFilter('all')}
-          >
-            All
-          </button>
-          <button
-            type="button"
-            style={{
-              borderColor: filterType === 'pending' ? 'red' : 'gray',
-            }}
-            onClick={() => this.handleFilter('pending')}
-          >
-            Pending
-          </button>
-          <button
-            type="button"
-            style={{
-              borderColor: filterType === 'completed' ? 'red' : 'gray',
-            }}
-            onClick={() => this.handleFilter('completed')}
-          >
-            Completed
-          </button>
-        </div>
+      <div className="h-screen flex flex-col sm:bg-green-300 bg-slate-200">
+        {error && (
+          <h1 className="text-center text-red-700">Something went wrong</h1>
+        )}
+        <h1 className="text-4xl text-center my-4 font-bold text-red-400">
+          Todo App
+        </h1>
+        <TodoForm addTodo={this.addTodo} ref={this.inputRef} />
+        <TodoList
+          filterType={filterType}
+          todoList={todoList}
+          toggleComplete={this.toggleComplete}
+          deleteTodo={this.deleteTodo}
+        />
+        <TodoFilter filterType={filterType} handleFilter={this.handleFilter} />
       </div>
     );
   }

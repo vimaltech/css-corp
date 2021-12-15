@@ -1,0 +1,9 @@
+{
+  "todo-list": [
+    {
+      "text": "Learn react native",
+      "isDone": false,
+      "id": 1
+    }
+  ]
+}
