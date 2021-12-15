@@ -1,5 +1,6 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
+import cn from 'classnames';
 
 const TodoFilter = ({ filterType, handleFilter }) => {
   console.log('TodoFilter render');
@@ -7,30 +8,27 @@ const TodoFilter = ({ filterType, handleFilter }) => {
     <div className="flex">
       <button
         type="button"
-        className="flex-1 btn-primary"
-        style={{
-          borderColor: filterType === 'all' ? 'red' : 'gray',
-        }}
+        className={cn('flex-1 btn-primary', {
+          'bg-green-200': filterType === 'all',
+        })}
         onClick={() => handleFilter('all')}
       >
         All
       </button>
       <button
         type="button"
-        className="flex-1 btn-primary"
-        style={{
-          borderColor: filterType === 'pending' ? 'red' : 'gray',
-        }}
+        className={cn('flex-1 btn-primary', {
+          'bg-green-200': filterType === 'pending',
+        })}
         onClick={() => handleFilter('pending')}
       >
         Pending
       </button>
       <button
         type="button"
-        className="flex-1 btn-primary"
-        style={{
-          borderColor: filterType === 'completed' ? 'red' : 'gray',
-        }}
+        className={cn('flex-1 btn-primary', {
+          'bg-green-200': filterType === 'completed',
+        })}
         onClick={() => handleFilter('completed')}
       >
         Completed

@@ -2,8 +2,48 @@
   "todo-list": [
     {
       "text": "Learn react native",
-      "isDone": false,
+      "isDone": true,
       "id": 1
+    },
+    {
+      "text": "Learn react native",
+      "isDone": true,
+      "id": 2
+    },
+    {
+      "text": "asdfadsf",
+      "isDone": true,
+      "id": 3
+    },
+    {
+      "text": "asdfadsfdas",
+      "isDone": true,
+      "id": 4
+    },
+    {
+      "text": "asdfdasasfasd",
+      "isDone": false,
+      "id": 5
+    },
+    {
+      "text": "asdfdas",
+      "isDone": true,
+      "id": 6
+    },
+    {
+      "text": "asdfadsf",
+      "isDone": true,
+      "id": 7
+    },
+    {
+      "text": "asdfadsf",
+      "isDone": false,
+      "id": 8
+    },
+    {
+      "text": "asdfadsfs",
+      "isDone": false,
+      "id": 9
     }
   ]
 }
