@@ -35,6 +35,8 @@ export default class Todo extends PureComponent {
       event.preventDefault();
       const todoText = this.inputRef.current.value;
 
+      if (!todoText) throw new Error('Please Enter Data..');
+
       const res = await fetch('http://localhost:3000/todo-list', {
         method: 'POST',
         body: JSON.stringify({
@@ -58,7 +60,11 @@ export default class Todo extends PureComponent {
           this.inputRef.current.value = '';
         },
       );
-    } catch (error) {}
+    } catch (error) {
+      this.setState({
+        error,
+      });
+    }
   };
 
   toggleComplete = async (item) => {
@@ -87,13 +93,19 @@ export default class Todo extends PureComponent {
     } catch (error) {}
   };
 
-  deleteTodo = (item) => {
-    this.setState(({ todoList }) => {
-      const index = todoList.findIndex((x) => x.id === item.id);
-      return {
-        todoList: [...todoList.slice(0, index), ...todoList.slice(index + 1)],
-      };
-    });
+  deleteTodo = async (item) => {
+    try {
+      await fetch(`http://localhost:3000/todo-list/${item.id}`, {
+        method: 'DELETE',
+      });
+
+      this.setState(({ todoList }) => {
+        const index = todoList.findIndex((x) => x.id === item.id);
+        return {
+          todoList: [...todoList.slice(0, index), ...todoList.slice(index + 1)],
+        };
+      });
+    } catch (error) {}
   };
 
   render() {
@@ -101,9 +113,7 @@ export default class Todo extends PureComponent {
     const { todoList, filterType, error } = this.state;
     return (
       <div className="h-screen flex flex-col sm:bg-green-300 bg-slate-200">
-        {error && (
-          <h1 className="text-center text-red-700">Something went wrong</h1>
-        )}
+        {error && <h1 className="text-center text-red-700">{error.message}</h1>}
         <h1 className="text-4xl text-center my-4 font-bold text-red-400">
           Todo App
         </h1>
