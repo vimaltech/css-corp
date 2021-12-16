@@ -2,7 +2,7 @@ import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import TodoItem from './TodoItem';
 
-const TodoList = ({ todoList, toggleComplete, deleteTodo }) => {
+const TodoList = ({ todoList, toggleComplete, deleteTodo, httpStatus }) => {
   console.log('TodoList render');
   return (
     <div className="flex-1">
@@ -12,6 +12,7 @@ const TodoList = ({ todoList, toggleComplete, deleteTodo }) => {
           item={item}
           toggleComplete={toggleComplete}
           deleteTodo={deleteTodo}
+          httpStatus={httpStatus}
         />
       ))}
       {/* {todoList.reduce((p, item) => {
@@ -50,6 +51,7 @@ TodoList.propTypes = {
       id: PropTypes.number,
       text: PropTypes.string,
       isDone: PropTypes.bool,
+      timeStamp: PropTypes.string,
     }),
   ).isRequired,
   toggleComplete: PropTypes.func.isRequired,

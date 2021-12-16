@@ -3,13 +3,14 @@ import PropTypes from 'prop-types';
 
 import cn from 'classnames';
 
-const TodoItem = ({ item, toggleComplete, deleteTodo }) => {
+const TodoItem = ({ item, toggleComplete, deleteTodo, httpStatus }) => {
   console.log('TodoItem Render');
   return (
     <div className="flex items-center m-4" key={item.id}>
       <input
         type="checkbox"
         checked={item.isDone}
+        disabled={httpStatus?.status === 'REQUEST'}
         onChange={() => toggleComplete(item)}
       />
       <p
