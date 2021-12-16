@@ -1,44 +1,28 @@
 {
   "todo-list": [
     {
-      "text": "asdfdasf",
+      "text": "asdfadsf",
       "isDone": false,
+      "timeStamp": "12-16-21 10:27",
       "id": 1
     },
     {
-      "text": "asdfadsf",
-      "isDone": false,
+      "text": "learn react",
+      "isDone": true,
+      "timeStamp": "12-16-21 11:18",
       "id": 2
     },
     {
-      "text": "asdfasdf",
+      "text": "learn react native",
       "isDone": true,
+      "timeStamp": "12-16-21 11:21",
+      "id": 3
+    },
+    {
+      "text": "learn flutter",
+      "isDone": false,
+      "timeStamp": "12-16-21 11:22",
       "id": 4
-    },
-    {
-      "text": "asdfasdf",
-      "isDone": false,
-      "id": 5
-    },
-    {
-      "text": "",
-      "isDone": false,
-      "id": 6
-    },
-    {
-      "text": "asdfads",
-      "isDone": false,
-      "id": 7
-    },
-    {
-      "text": "",
-      "isDone": false,
-      "id": 8
-    },
-    {
-      "text": "",
-      "isDone": false,
-      "id": 9
     }
   ]
 }
