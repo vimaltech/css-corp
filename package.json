@@ -53,6 +53,7 @@
     "webpack-dev-server": "^4.6.0"
   },
   "dependencies": {
+    "@loadable/component": "^5.15.2",
     "classnames": "^2.3.1",
     "date-fns": "^2.27.0",
     "prop-types": "^15.7.2",

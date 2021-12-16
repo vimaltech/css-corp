@@ -1,17 +1,28 @@
-import React, { PureComponent, createRef, lazy, Suspense } from 'react';
+import React, { PureComponent, createRef } from 'react';
+import loadable from '@loadable/component';
 // import format from 'date-fns/format';
 // import TodoFilter from './todoFilter';
 // import TodoForm from './todoForm';
 // import TodoList from './todoList';
 
-const TodoFilter = lazy(() =>
-  import(/* webpackChunkName: "TodoFilter" */ './todoFilter'),
+// cont giveMePath = (path) => {
+//   return loadable(
+//     () => import(/* webpackChunkName: "TodoFilter" */ `${path}`),
+//     { fallback: <h1>Loading...</h1> },
+//   )
+// }
+
+const TodoFilter = loadable(
+  () => import(/* webpackChunkName: "TodoFilter" */ './todoFilter'),
+  { fallback: <h1>Loading...</h1> },
 );
-const TodoForm = lazy(() =>
-  import(/* webpackChunkName: "TodoForm" */ './todoForm'),
+const TodoForm = loadable(
+  () => import(/* webpackChunkName: "TodoForm" */ './todoForm'),
+  { fallback: <h1>Loading...</h1> },
 );
-const TodoList = lazy(() =>
-  import(/* webpackChunkName: "TodoList" */ './todoList'),
+const TodoList = loadable(
+  () => import(/* webpackChunkName: "TodoList" */ './todoList'),
+  { fallback: <h1>Loading...</h1> },
 );
 
 export default class Todo extends PureComponent {
@@ -130,41 +141,21 @@ export default class Todo extends PureComponent {
         <h1 className="text-4xl text-center my-4 font-bold text-red-400">
           Todo App
         </h1>
-        <Suspense
-          fallback={
-            <h1 className="text-center text-red-400">Loading Todo Form...</h1>
-          }
-        >
-          <TodoForm addTodo={this.addTodo} ref={this.inputRef} />
-        </Suspense>
+
+        <TodoForm addTodo={this.addTodo} ref={this.inputRef} />
         {todoList.length > 0 ? (
-          <Suspense
-            fallback={
-              <h1 className="text-center text-green-400">
-                Loading Todo List...
-              </h1>
-            }
-          >
-            <TodoList
-              todoList={todoList}
-              toggleComplete={this.toggleComplete}
-              deleteTodo={this.deleteTodo}
-            />
-          </Suspense>
+          <TodoList
+            todoList={todoList}
+            toggleComplete={this.toggleComplete}
+            deleteTodo={this.deleteTodo}
+          />
         ) : (
           <div className="h-screen">
             <h1 className="text-center">Please add task</h1>
           </div>
         )}
-        <Suspense
-          fallback={
-            <h1 className="text-center text-purple-400">
-              Loading Todo Filter...
-            </h1>
-          }
-        >
-          <TodoFilter filterType={filterType} handleFilter={this.loadTodo} />
-        </Suspense>
+
+        <TodoFilter filterType={filterType} handleFilter={this.loadTodo} />
       </div>
     );
   }
