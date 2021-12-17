@@ -1,7 +1,19 @@
 import React from 'react';
 import ReactDOM from 'react-dom';
+import ErrorProvider from './context/errorContext';
+import LoadingProvider from './context/loadingContext';
 import Todo from './Pages/Todo';
 import './root.css';
+
+ReactDOM.render(
+  <LoadingProvider>
+    <ErrorProvider>
+      <Todo />
+    </ErrorProvider>
+  </LoadingProvider>,
+
+  document.getElementById('root'),
+);
 
 // Components
 // 1. function components
@@ -38,5 +50,3 @@ import './root.css';
 //     );
 //   }
 // }
-
-ReactDOM.render(<Todo />, document.getElementById('root'));

@@ -1,6 +1,7 @@
 import React, { memo } from 'react';
 import cn from 'classnames';
 import PropTypes from 'prop-types';
+import { ThemeContext } from '../../context/themeContext';
 
 const TodoItem = ({ item, toggleComplete, deleteTodo, httpStatus }) => {
   console.log('TodoItem Render');
@@ -22,6 +23,9 @@ const TodoItem = ({ item, toggleComplete, deleteTodo, httpStatus }) => {
         {item.text}
       </p>
       <p>{item.timeStamp}</p>
+      <ThemeContext.Consumer>
+        {({ theme }) => <p>{theme}</p>}
+      </ThemeContext.Consumer>
       <button
         type="button"
         className={cn('bg-blue-500 text-white px-4 py-2 rounded mx-2', {

@@ -1,11 +1,22 @@
 import React, { memo } from 'react';
 import PropTypes from 'prop-types';
 import TodoItem from './TodoItem';
+import { ThemeContext } from '../../context/themeContext';
 
 const TodoList = ({ todoList, toggleComplete, deleteTodo, httpStatus }) => {
   console.log('TodoList render');
   return (
     <div className="flex-1">
+      <ThemeContext.Consumer>
+        {({ theme, toggleTheme }) => (
+          <div>
+            <p>{theme}</p>
+            <button type="button" onClick={toggleTheme}>
+              Change Theme
+            </button>
+          </div>
+        )}
+      </ThemeContext.Consumer>
       {todoList.map((item) => (
         <TodoItem
           key={item.id}

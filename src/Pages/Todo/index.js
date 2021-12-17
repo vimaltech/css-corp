@@ -1,5 +1,6 @@
 import React, { PureComponent, createRef } from 'react';
 import loadable from '@loadable/component';
+import ThemeProvider from '../../context/themeContext';
 // import format from 'date-fns/format';
 // import TodoFilter from './todoFilter';
 // import TodoForm from './todoForm';
@@ -209,12 +210,14 @@ export default class Todo extends PureComponent {
           httpStatus={addStatus}
         />
         {todoList.length > 0 ? (
-          <TodoList
-            todoList={todoList}
-            toggleComplete={this.toggleComplete}
-            deleteTodo={this.deleteTodo}
-            httpStatus={todoListStatus}
-          />
+          <ThemeProvider>
+            <TodoList
+              todoList={todoList}
+              toggleComplete={this.toggleComplete}
+              deleteTodo={this.deleteTodo}
+              httpStatus={todoListStatus}
+            />
+          </ThemeProvider>
         ) : (
           <div className="h-screen">
             <h1 className="text-center">Please add task</h1>
