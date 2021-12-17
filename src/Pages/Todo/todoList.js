@@ -12,7 +12,7 @@ const TodoList = ({ todoList, toggleComplete, deleteTodo, httpStatus }) => {
           item={item}
           toggleComplete={toggleComplete}
           deleteTodo={deleteTodo}
-          httpStatus={httpStatus}
+          httpStatus={httpStatus.filter((x) => x.id === item.id)}
         />
       ))}
       {/* {todoList.reduce((p, item) => {
@@ -56,6 +56,14 @@ TodoList.propTypes = {
   ).isRequired,
   toggleComplete: PropTypes.func.isRequired,
   deleteTodo: PropTypes.func.isRequired,
+  httpStatus: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string,
+      status: PropTypes.oneOf(['REQUEST', 'FAIL']),
+      id: PropTypes.number,
+      payload: PropTypes.objectOf(Error),
+    }),
+  ).isRequired,
 };
 
 export default memo(TodoList);

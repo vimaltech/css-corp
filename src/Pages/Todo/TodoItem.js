@@ -1,7 +1,6 @@
 import React, { memo } from 'react';
-import PropTypes from 'prop-types';
-
 import cn from 'classnames';
+import PropTypes from 'prop-types';
 
 const TodoItem = ({ item, toggleComplete, deleteTodo, httpStatus }) => {
   console.log('TodoItem Render');
@@ -10,7 +9,9 @@ const TodoItem = ({ item, toggleComplete, deleteTodo, httpStatus }) => {
       <input
         type="checkbox"
         checked={item.isDone}
-        disabled={httpStatus?.status === 'REQUEST'}
+        disabled={httpStatus.some(
+          (x) => x.type === 'UPDATE_TODO' && x.status === 'REQUEST',
+        )}
         onChange={() => toggleComplete(item)}
       />
       <p
@@ -21,7 +22,21 @@ const TodoItem = ({ item, toggleComplete, deleteTodo, httpStatus }) => {
         {item.text}
       </p>
       <p>{item.timeStamp}</p>
-      <button type="button" onClick={() => deleteTodo(item)}>
+      <button
+        type="button"
+        className={cn('bg-blue-500 text-white px-4 py-2 rounded mx-2', {
+          'bg-slate-400': httpStatus.some(
+            (x) => x.type === 'DELETE_TODO' && x.status === 'REQUEST',
+          ),
+          'text-black': httpStatus.some(
+            (x) => x.type === 'DELETE_TODO' && x.status === 'REQUEST',
+          ),
+        })}
+        disabled={httpStatus.some(
+          (x) => x.type === 'DELETE_TODO' && x.status === 'REQUEST',
+        )}
+        onClick={() => deleteTodo(item)}
+      >
         Delete
       </button>
     </div>
@@ -37,6 +52,14 @@ TodoItem.propTypes = {
     text: PropTypes.string,
     timeStamp: PropTypes.string,
   }).isRequired,
+  httpStatus: PropTypes.arrayOf(
+    PropTypes.shape({
+      type: PropTypes.string,
+      status: PropTypes.oneOf(['REQUEST', 'FAIL']),
+      id: PropTypes.number,
+      payload: PropTypes.objectOf(Error),
+    }),
+  ).isRequired,
 };
 
 export default memo(TodoItem);
