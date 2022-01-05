@@ -2,9 +2,15 @@ import React, { Component } from 'react';
 
 class App extends Component {
   async componentDidMount() {
-    const res = await fetch('https://api.weatherserver.com/weather/cities/co');
+    const res = await fetch('https://api.weatherserver.com/weather/cities/ch');
     const json = await res.json();
     console.log(json);
+
+    const res1 = await fetch(
+      'https://api.weatherserver.com/weather/current/4887398/C',
+    );
+    const json1 = await res1.json();
+    console.log(json1);
   }
 
   render() {
