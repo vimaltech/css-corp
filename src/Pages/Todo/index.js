@@ -1,9 +1,16 @@
-import React, { useState, useEffect, useRef } from 'react';
+import React, {
+  useState,
+  useEffect,
+  useRef,
+  useCallback,
+  useMemo,
+} from 'react';
 import loadable from '@loadable/component';
 import ThemeProvider from '../../context/themeContext';
 // import format from 'date-fns/format';
 // import TodoFilter from './todoFilter';
 import TodoForm from './todoForm';
+import useHttpStatus from '../../hooks/useHttpStatus';
 // import TodoList from './todoList';
 
 // cont giveMePath = (path) => {
@@ -233,132 +240,133 @@ const TodoList = loadable(
 const Todo = () => {
   const [todoList, setTodoList] = useState([]);
   const [filterType, setFilterType] = useState('all');
-  const [httpStatus, setHttpStatus] = useState([]);
   const inputRef = useRef();
 
-  const loadingStatus = ({ type, id = -1 }) => {
-    setHttpStatus((val) => {
-      const index = val.findIndex((x) => x.type === type && x.id === id);
-      const data = { type, status: 'REQUEST', id };
-      if (index === -1) {
-        return [...val, data];
-      }
-      return [...val.slice(0, index), data, ...val.slice(index + 1)];
-    });
-  };
+  const { httpStatus, loadingStatus, successStatus, errorStatus } =
+    useHttpStatus();
 
-  const successStatus = ({ type, id = -1 }) => {
-    setHttpStatus((val) =>
-      val.filter((x) => !(x.type === type && x.id === id)),
-    );
-  };
-
-  const errorStatus = ({ type, payload, id = -1 }) => {
-    setHttpStatus((val) =>
-      val.map((x) => {
-        if (x.type === type && x.id === id) {
-          return { ...x, status: 'FAIL', payload };
-        }
-        return x;
-      }),
-    );
-  };
-
-  // component Did mount
-  useEffect(() => {
-    const loadTodo = async () => {
+  const loadTodo = useCallback(
+    async (ft) => {
       const type = 'LOAD_TODO';
       try {
         loadingStatus({ type });
-        const res = await fetch('http://localhost:3000/todo-list');
+
+        let url = 'http://localhost:3000/todo-list';
+        if (ft !== 'all') {
+          url = `${url}?isDone=${ft === 'completed'}`;
+        }
+        const res = await fetch(url);
         const json = await res.json();
         setTodoList(json);
+        setFilterType(ft);
         successStatus({ type });
       } catch (error) {
         errorStatus({ type, payload: error });
       }
-    };
-    loadTodo();
-  }, []);
+    },
+    [loadingStatus, successStatus, errorStatus],
+  );
 
-  const addTodo = async (event) => {
-    const type = 'ADD_TODO';
-    try {
-      event.preventDefault();
-      loadingStatus({ type });
-      const todoText = inputRef.current.value;
-      if (!todoText) throw new Error('Please Enter Data..');
-      const format = (await import('date-fns/format')).default;
-      const res = await fetch('http://localhost:3000/todo-list', {
-        method: 'POST',
-        body: JSON.stringify({
-          text: todoText,
-          isDone: false,
-          timeStamp: format(new Date(), 'MM-dd-yy HH:mm'),
-        }),
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      });
-      const json = await res.json();
-      setTodoList((val) => [...val, json]);
-      setFilterType('all');
-      successStatus({ type });
-      inputRef.current.value = '';
-    } catch (error) {
-      errorStatus({ type, payload: error });
-    }
-  };
+  // component Did mount
+  useEffect(() => {
+    loadTodo('all');
+  }, [loadTodo, loadingStatus, successStatus, errorStatus]);
 
-  const toggleComplete = async (item) => {
-    const type = 'UPDATE_TODO';
-    try {
-      loadingStatus({ type, id: item.id });
-      const res = await fetch(`http://localhost:3000/todo-list/${item.id}`, {
-        method: 'PUT',
-        body: JSON.stringify({ ...item, isDone: !item.isDone }),
-        headers: {
-          'Content-Type': 'application/json',
-          Accept: 'application/json',
-        },
-      });
-      const json = await res.json();
-      setTodoList((val) => {
-        const index = val.findIndex((x) => x.id === item.id);
-        return [
-          ...todoList.slice(0, index),
-          json,
-          ...todoList.slice(index + 1),
-        ];
-      });
-      successStatus({ type, id: item.id });
-    } catch (error) {
-      errorStatus({ type, payload: error, id: item.id });
-    }
-  };
+  const addTodo = useCallback(
+    async (event) => {
+      const type = 'ADD_TODO';
+      try {
+        event.preventDefault();
+        loadingStatus({ type });
+        const todoText = inputRef.current.value;
+        if (!todoText) throw new Error('Please Enter Data..');
+        const format = (await import('date-fns/format')).default;
+        const res = await fetch('http://localhost:3000/todo-list', {
+          method: 'POST',
+          body: JSON.stringify({
+            text: todoText,
+            isDone: false,
+            timeStamp: format(new Date(), 'MM-dd-yy HH:mm'),
+          }),
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        });
+        const json = await res.json();
+        setTodoList((val) => [...val, json]);
+        setFilterType('all');
+        successStatus({ type });
+        inputRef.current.value = '';
+      } catch (error) {
+        errorStatus({ type, payload: error });
+      }
+    },
+    [loadingStatus, successStatus, errorStatus],
+  );
 
-  const deleteTodo = async (item) => {
-    const type = 'DELETE_TODO';
-    try {
-      loadingStatus({ type, id: item.id });
-      await fetch(`http://localhost:3000/todo-list/${item.id}`, {
-        method: 'DELETE',
-      });
-      setTodoList((val) => {
-        const index = val.findIndex((x) => x.id === item.id);
-        return [...todoList.slice(0, index), ...todoList.slice(index + 1)];
-      });
-      successStatus({ type, id: item.id });
-    } catch (error) {
-      errorStatus({ type, payload: error, id: item.id });
-    }
-  };
+  const toggleComplete = useCallback(
+    async (item) => {
+      const type = 'UPDATE_TODO';
+      try {
+        loadingStatus({ type, id: item.id });
+        const res = await fetch(`http://localhost:3000/todo-list/${item.id}`, {
+          method: 'PUT',
+          body: JSON.stringify({ ...item, isDone: !item.isDone }),
+          headers: {
+            'Content-Type': 'application/json',
+            Accept: 'application/json',
+          },
+        });
+        const json = await res.json();
+        setTodoList((val) => {
+          const index = val.findIndex((x) => x.id === item.id);
+          return [...val.slice(0, index), json, ...val.slice(index + 1)];
+        });
+        successStatus({ type, id: item.id });
+      } catch (error) {
+        errorStatus({ type, payload: error, id: item.id });
+      }
+    },
+    [loadingStatus, successStatus, errorStatus],
+  );
 
-  const loadStatus = httpStatus.find((x) => x.type === 'LOAD_TODO');
-  const addStatus = httpStatus.find((x) => x.type === 'ADD_TODO');
-  const todoListStatus = httpStatus.filter(
-    (x) => x.type === 'UPDATE_TODO' || x.type === 'DELETE_TODO',
+  const deleteTodo = useCallback(
+    async (item) => {
+      const type = 'DELETE_TODO';
+      try {
+        loadingStatus({ type, id: item.id });
+        await fetch(`http://localhost:3000/todo-list/${item.id}`, {
+          method: 'DELETE',
+        });
+        setTodoList((val) => {
+          const index = val.findIndex((x) => x.id === item.id);
+          return [...val.slice(0, index), ...val.slice(index + 1)];
+        });
+        successStatus({ type, id: item.id });
+      } catch (error) {
+        errorStatus({ type, payload: error, id: item.id });
+      }
+    },
+    [loadingStatus, successStatus, errorStatus],
+  );
+
+  const loadStatus = useMemo(
+    () => httpStatus.find((x) => x.type === 'LOAD_TODO'),
+    [httpStatus],
+  );
+
+  const addStatus = useMemo(
+    () => httpStatus.find((x) => x.type === 'ADD_TODO'),
+    [httpStatus],
+  );
+
+  const todoListStatus = useMemo(
+    () =>
+      httpStatus.filter(
+        (x) => x.type === 'UPDATE_TODO' || x.type === 'DELETE_TODO',
+      ),
+    [httpStatus],
   );
 
   return (
@@ -384,7 +392,7 @@ const Todo = () => {
         </div>
       )}
 
-      <TodoFilter filterType={filterType} handleFilter={() => {}} />
+      <TodoFilter filterType={filterType} handleFilter={loadTodo} />
     </div>
   );
 };

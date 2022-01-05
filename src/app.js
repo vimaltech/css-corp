@@ -128,7 +128,9 @@ class App extends Component {
 
   // convert html into DOM
   render() {
-    const { i, greet, user, error } = this.state;
+    const {
+      i, greet, user, error,
+    } = this.state;
 
     if (error) {
       return <h1>{error.message}</h1>;

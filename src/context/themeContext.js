@@ -1,27 +1,29 @@
-import React, { createContext, PureComponent } from 'react';
+import React, { createContext, useCallback, useMemo, useState } from 'react';
 
 export const ThemeContext = createContext();
 
-class ThemeProvider extends PureComponent {
-  state = {
-    theme: 'dark',
-  };
+// useCallback && useMemo used for memorize data;
+// useCallback will memorize function
+// useMemo will memorize data(i.e object, array)
 
-  toggleTheme = () => {
-    this.setState(({ theme }) => ({
-      theme: theme === 'dark' ? 'light' : 'dark',
-    }));
-  };
+const ThemeProvider = ({ children }) => {
+  const [theme, setTheme] = useState('dark');
 
-  render() {
-    const { children } = this.props;
-    const { theme } = this.state;
-    return (
-      <ThemeContext.Provider value={{ theme, toggleTheme: this.toggleTheme }}>
-        {children}
-      </ThemeContext.Provider>
-    );
-  }
-}
+  const toggleTheme = useCallback(() => {
+    setTheme((val) => (val === 'dark' ? 'light' : 'dark'));
+  }, []);
+
+  const value = useMemo(
+    () => ({
+      theme,
+      toggleTheme,
+    }),
+    [theme, toggleTheme],
+  );
+
+  return (
+    <ThemeContext.Provider value={value}>{children}</ThemeContext.Provider>
+  );
+};
 
 export default ThemeProvider;
