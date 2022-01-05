@@ -3,7 +3,9 @@ import cn from 'classnames';
 import PropTypes from 'prop-types';
 import { ThemeContext } from '../../context/themeContext';
 
-const TodoItem = ({ item, toggleComplete, deleteTodo, httpStatus }) => {
+const TodoItem = ({
+  item, toggleComplete, deleteTodo, httpStatus,
+}) => {
   console.log('TodoItem Render');
   return (
     <div className="flex items-center m-4" key={item.id}>

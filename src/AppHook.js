@@ -1,4 +1,6 @@
-import React, { useState, useEffect, useRef, memo } from 'react';
+import React, {
+  useState, useEffect, useRef, memo,
+} from 'react';
 import Child1 from './Child1';
 
 // Mounting
