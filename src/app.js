@@ -1,5 +1,4 @@
 import React, { Component } from 'react';
-import PropTypes from 'prop-types';
 import Child2 from './Child2';
 import Child1 from './Child1';
 
@@ -129,7 +128,9 @@ class App extends Component {
 
   // convert html into DOM
   render() {
-    const { i, greet, user, error } = this.state;
+    const {
+      i, greet, user, error,
+    } = this.state;
 
     if (error) {
       return <h1>{error.message}</h1>;
