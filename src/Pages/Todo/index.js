@@ -242,8 +242,9 @@ const Todo = () => {
   const [filterType, setFilterType] = useState('all');
   const inputRef = useRef();
 
-  const { httpStatus, loadingStatus, successStatus, errorStatus } =
-    useHttpStatus();
+  const {
+    httpStatus, loadingStatus, successStatus, errorStatus,
+  } = useHttpStatus();
 
   const loadTodo = useCallback(
     async (ft) => {

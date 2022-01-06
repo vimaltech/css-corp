@@ -3,7 +3,9 @@ import PropTypes from 'prop-types';
 import TodoItem from './TodoItem';
 import { ThemeContext } from '../../context/themeContext';
 
-const TodoList = ({ todoList, toggleComplete, deleteTodo, httpStatus }) => {
+const TodoList = ({
+  todoList, toggleComplete, deleteTodo, httpStatus,
+}) => {
   console.log('TodoList render');
 
   return (
