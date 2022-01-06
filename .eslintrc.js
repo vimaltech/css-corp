@@ -22,6 +22,7 @@ module.exports = {
     'react/function-component-definition': 0,
     'react/static-property-placement': 0,
     'react/state-in-constructor': 0,
+    'react/jsx-wrap-multilines': 0,
     'react/jsx-props-no-spreading': 0,
     'react-hooks/rules-of-hooks': 'error',
     'react-hooks/exhaustive-deps': 'error',
