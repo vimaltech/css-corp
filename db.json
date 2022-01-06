@@ -1,4 +1,14 @@
 {
+  "users": [
+    {
+      "email": "yagnesh.modh@gmail.com",
+      "password": "$2a$10$AuwTn8l8G8v5tlGSStQwaeIGiTWJB8kgGIPhdtVirRjV7ef6friZ2",
+      "name": "Yagnesh Modh",
+      "gender": "male",
+      "age": 30,
+      "id": 1
+    }
+  ],
   "todo-list": [
     {
       "text": "hello4",
