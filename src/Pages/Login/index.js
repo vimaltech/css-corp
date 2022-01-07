@@ -1,9 +1,19 @@
 import React from 'react';
-import { Formik, Form } from 'formik';
+import { Formik, Form, Field } from 'formik';
 import cn from 'classnames';
+import { LockClosedIcon } from '@heroicons/react/solid';
+import FormikInput from '../../component/FormikTextInput';
+import FormikCheckbox from '../../component/FormikCheckbox';
+import FormikRadio from '../../component/FormikRadio';
+
+const wait = (time) =>
+  new Promise((resolve) => {
+    setTimeout(resolve, time);
+  });
 
 const Login = () => {
-  const onSubmitLogin = (values) => {
+  const onSubmitLogin = async (values) => {
+    await wait(5000);
     console.log(values);
   };
 
@@ -28,109 +38,90 @@ const Login = () => {
         email: '',
         password: '',
         rememberMe: false,
+        gender: 'male',
       }}
       onSubmit={onSubmitLogin}
       validate={validateLogin}
     >
-      {({ values, handleChange, errors, handleBlur, touched }) => (
-        <Form className="mt-8 space-y-6">
-          <input type="hidden" name="remember" defaultValue="true" />
-          <div className="rounded-md shadow-sm -space-y-px">
-            <div>
-              <label htmlFor="email-address" className="sr-only">
-                Email address
-              </label>
-              <input
-                id="email-address"
+      {({ isValid, isSubmitting, touched, setFieldValue }) => {
+        const isTouched = Object.keys(touched).length > 0;
+        setFieldValue();
+        return (
+          <Form className="mt-8 space-y-6">
+            <input type="hidden" name="remember" defaultValue="true" />
+            <div className="rounded-md shadow-sm -space-y-px">
+              <Field
+                component={FormikInput}
                 name="email"
                 type="email"
-                value={values.email}
-                onChange={handleChange}
-                onBlur={handleBlur}
                 autoComplete="email"
-                className={cn(
-                  'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-t-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm',
-                  {
-                    'border-red-300': touched.email && !!errors.email,
-                    'focus:border-red-500': touched.email && !!errors.email,
-                  },
-                )}
                 placeholder="Email address"
+                isFirstInput
               />
-              {touched.email && !!errors.email && <p>{errors.email}</p>}
-            </div>
-            <div>
-              <label htmlFor="password" className="sr-only">
-                Password
-              </label>
-              <input
-                id="password"
+              <Field
+                component={FormikInput}
                 name="password"
                 type="password"
-                value={values.password}
-                onChange={handleChange}
-                onBlur={handleBlur}
-                autoComplete="current-password"
+                autoComplete="password"
+                placeholder="Password"
+                isLastInput
+              />
+              <Field
+                component={FormikRadio}
+                name="gender"
+                options={[
+                  { value: 'male', text: 'Male' },
+                  { value: 'female', text: 'Female' },
+                  { value: 'other', text: 'Other' },
+                ]}
+              />
+            </div>
+            <div className="flex items-center justify-between">
+              <Field
+                component={FormikCheckbox}
+                name="rememberMe"
+                label="Remember Me"
+              />
+
+              <div className="text-sm">
+                <a
+                  href="#"
+                  className="font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                  Forgot your password?
+                </a>
+              </div>
+            </div>
+
+            <div>
+              <button
+                type="submit"
+                disabled={isSubmitting || !(isTouched && isValid)}
                 className={cn(
-                  'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900 rounded-b-md focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm',
+                  'group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
                   {
-                    'border-red-300': touched.password && !!errors.password,
-                    'focus:border-red-500':
-                      touched.password && !!errors.password,
+                    'bg-gray-300': isSubmitting || !(isTouched && isValid),
+                    'hover:bg-gray-500':
+                      isSubmitting || !(isTouched && isValid),
+                    'focus:ring-gray-700':
+                      isSubmitting || !(isTouched && isValid),
                   },
                 )}
-                placeholder="Password"
-              />
-              {touched.password && !!errors.password && (
-                <p>{errors.password}</p>
-              )}
-            </div>
-          </div>
-
-          <div className="flex items-center justify-between">
-            <div className="flex items-center">
-              <input
-                id="rememberMe"
-                name="rememberMe"
-                type="checkbox"
-                checked={values.rememberMe}
-                onChange={handleChange}
-                className="h-4 w-4 text-indigo-600 focus:ring-indigo-500 border-gray-300 rounded"
-              />
-              <label
-                htmlFor="rememberMe"
-                className="ml-2 block text-sm text-gray-900"
               >
-                Remember me
-              </label>
+                {!isValid && (
+                  <span className="absolute left-0 inset-y-0 flex items-center pl-3">
+                    <LockClosedIcon
+                      className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
+                      aria-hidden="true"
+                    />
+                  </span>
+                )}
+                Sign in
+              </button>
             </div>
-
-            <div className="text-sm">
-              <a
-                href="#"
-                className="font-medium text-indigo-600 hover:text-indigo-500"
-              >
-                Forgot your password?
-              </a>
-            </div>
-          </div>
-
-          <div>
-            <button
-              type="submit"
-              className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
-            >
-              <span className="absolute left-0 inset-y-0 flex items-center pl-3">
-                {/* <LockClosedIcon
-                className="h-5 w-5 text-indigo-500 group-hover:text-indigo-400"
-                aria-hidden="true"
-              /> */}
-              </span>
-              Sign in
-            </button>
-          </div>
-        </Form>
-      )}
+          </Form>
+        );
+      }}
     </Formik>
   );
 };
