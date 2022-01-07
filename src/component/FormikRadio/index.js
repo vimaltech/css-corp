@@ -6,7 +6,7 @@ const FormikRadio = ({
   options,
 }) => (
   <fieldset>
-    <div>
+    <div className="mt-4">
       <legend className="text-base font-medium text-gray-900">Gender</legend>
     </div>
     <div className="mt-4 space-x-4 flex">

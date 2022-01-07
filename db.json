@@ -2,10 +2,10 @@
   "users": [
     {
       "email": "yagnesh.modh@gmail.com",
-      "password": "$2a$10$AuwTn8l8G8v5tlGSStQwaeIGiTWJB8kgGIPhdtVirRjV7ef6friZ2",
+      "password": "$2a$10$28poJk851za5KDiI3M5G9eaEYeUClkZbflCn4GYt.W4L0IV4KJon.",
       "name": "Yagnesh Modh",
+      "country": "in",
       "gender": "male",
-      "age": 30,
       "id": 1
     }
   ],

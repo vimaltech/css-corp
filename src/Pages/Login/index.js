@@ -5,6 +5,7 @@ import { LockClosedIcon } from '@heroicons/react/solid';
 import FormikInput from '../../component/FormikTextInput';
 import FormikCheckbox from '../../component/FormikCheckbox';
 import FormikRadio from '../../component/FormikRadio';
+import { Link } from 'react-router-dom';
 
 const wait = (time) =>
   new Promise((resolve) => {
@@ -43,9 +44,8 @@ const Login = () => {
       onSubmit={onSubmitLogin}
       validate={validateLogin}
     >
-      {({ isValid, isSubmitting, touched, setFieldValue }) => {
+      {({ isValid, isSubmitting, touched }) => {
         const isTouched = Object.keys(touched).length > 0;
-        setFieldValue();
         return (
           <Form className="mt-8 space-y-6">
             <input type="hidden" name="remember" defaultValue="true" />
@@ -65,15 +65,6 @@ const Login = () => {
                 autoComplete="password"
                 placeholder="Password"
                 isLastInput
-              />
-              <Field
-                component={FormikRadio}
-                name="gender"
-                options={[
-                  { value: 'male', text: 'Male' },
-                  { value: 'female', text: 'Female' },
-                  { value: 'other', text: 'Other' },
-                ]}
               />
             </div>
             <div className="flex items-center justify-between">
@@ -118,6 +109,15 @@ const Login = () => {
                 )}
                 Sign in
               </button>
+            </div>
+
+            <div className="text-sm text-center">
+              <Link
+                to="/register"
+                className="font-medium text-indigo-600 hover:text-indigo-500"
+              >
+                Dont have an account? Please Register
+              </Link>
             </div>
           </Form>
         );
