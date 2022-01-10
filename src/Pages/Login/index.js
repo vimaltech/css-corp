@@ -1,11 +1,10 @@
 import React from 'react';
 import { Formik, Form, Field } from 'formik';
 import cn from 'classnames';
+import { Link } from 'react-router-dom';
 import { LockClosedIcon } from '@heroicons/react/solid';
 import FormikInput from '../../component/FormikTextInput';
 import FormikCheckbox from '../../component/FormikCheckbox';
-import FormikRadio from '../../component/FormikRadio';
-import { Link } from 'react-router-dom';
 
 const wait = (time) =>
   new Promise((resolve) => {
