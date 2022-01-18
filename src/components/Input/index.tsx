@@ -1,17 +1,24 @@
-import React, { LabelHTMLAttributes } from 'react';
+import React, { ComponentProps } from 'react';
 import { FieldProps } from 'formik';
 import cn from 'classnames';
 
-type Props = {
-  label: string;
+type FirstProp = {
   isFirst?: boolean;
+  isLast?: never;
+};
+
+type LastProp = {
+  isFirst?: never;
   isLast?: boolean;
-} & FieldProps;
+};
+
+type BorderProps = FirstProp | LastProp;
+
+type Props = BorderProps & FieldProps & ComponentProps<'input'>;
 
 const Input = ({
   field,
   form: { touched, errors },
-  label,
   isFirst,
   isLast,
   ...props
@@ -20,7 +27,7 @@ const Input = ({
   return (
     <div>
       <label htmlFor={field.name} className="sr-only">
-        {label}
+        {props.placeholder}
       </label>
       <input
         id={field.name}
@@ -34,7 +41,6 @@ const Input = ({
               !!hasError,
           },
         )}
-        placeholder={label}
         {...field}
         {...props}
       />
