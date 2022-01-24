@@ -1,27 +1,24 @@
 import React from 'react';
-import { Formik, Field, Form } from 'formik';
-import Input from '../../components/Input';
+import { Field } from 'formik';
 import Checkbox from 'components/Checkbox';
 import Link from 'components/Link';
-import LockIcon from 'assets/icons/lock.svg';
-import Button from 'components/Button';
-import { LoginFields } from './loginUtils';
+import {
+  LoginFields,
+  LoginInitValues,
+  LoginInitValuesProps,
+} from './loginUtils';
 import CustomForm from 'components/CustomForm';
 
 interface Props {}
 
 const Login = (props: Props) => {
-  const onSubmit = (values) => {
+  const onSubmit = (values: LoginInitValuesProps) => {
     console.log(values);
   };
 
   return (
     <CustomForm
-      initialValues={{
-        email: '',
-        password: '',
-        remember_me: false,
-      }}
+      initialValues={LoginInitValues}
       fields={LoginFields}
       onSubmit={onSubmit}
       btnProps={{

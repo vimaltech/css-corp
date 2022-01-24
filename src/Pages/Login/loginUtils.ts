@@ -1,4 +1,19 @@
 import Input from 'components/Input';
+import { FieldConfig, GenericFieldHTMLAttributes } from 'formik';
+import { BorderProps } from 'types/borderProps';
+import { FieldsProps } from 'types/fieldsProps';
+
+export type LoginInitValuesProps = {
+  email: string;
+  password: string;
+  remember_me: boolean;
+};
+
+export const LoginInitValues: LoginInitValuesProps = {
+  email: '',
+  password: '',
+  remember_me: false,
+};
 
 const checkRequired = (value: string) => {
   if (!value) {
@@ -7,10 +22,10 @@ const checkRequired = (value: string) => {
   return '';
 };
 
-export const LoginFields = [
+export const LoginFields: FieldsProps<LoginInitValuesProps>[] = [
   {
     name: 'email',
-    component: Input,
+    component: Input as React.ComponentType,
     placeholder: 'Email address',
     type: 'email',
     autoComplete: 'email',
@@ -21,7 +36,7 @@ export const LoginFields = [
   },
   {
     name: 'password',
-    component: Input,
+    component: Input as React.ComponentType,
     placeholder: 'Password',
     type: 'password',
     autoComplete: 'current-password',

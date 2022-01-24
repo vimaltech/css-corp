@@ -12,7 +12,8 @@
         "alias": {
           "components": "./src/components",
           "Pages": "./src/Pages",
-          "assets": "./src/assets"
+          "assets": "./src/assets",
+          "types": "./src/types"
         }
       }
     ],

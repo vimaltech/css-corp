@@ -2,12 +2,16 @@ import React, { ComponentProps } from 'react';
 import { FieldProps } from 'formik';
 import cn from 'classnames';
 import { BorderProps } from 'types/borderProps';
+import { SelectOptions } from 'types';
 
-type Props = BorderProps & FieldProps & ComponentProps<'input'>;
+type Props = { options: SelectOptions[] } & BorderProps &
+  FieldProps &
+  ComponentProps<'select'>;
 
-const Input = ({
+const Select = ({
   field,
   form: { touched, errors },
+  options,
   isFirst,
   isLast,
   ...props
@@ -18,9 +22,10 @@ const Input = ({
       <label htmlFor={field.name} className="sr-only">
         {props.placeholder}
       </label>
-      <input
+      <select
         id={field.name}
-        autoComplete="email"
+        {...field}
+        {...props}
         className={cn(
           'appearance-none rounded-none relative block w-full px-3 py-2 border border-gray-300 placeholder-gray-500 text-gray-900  focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 focus:z-10 sm:text-sm',
           {
@@ -30,9 +35,14 @@ const Input = ({
               !!hasError,
           },
         )}
-        {...field}
-        {...props}
-      />
+      >
+        <option value="">{props.placeholder}</option>
+        {options.map((x) => (
+          <option key={x.value} value={x.value}>
+            {x.text}
+          </option>
+        ))}
+      </select>
       {hasError && (
         <p className="text-red-400 text-sm my-1">{errors[field.name]}</p>
       )}
@@ -40,4 +50,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default Select;

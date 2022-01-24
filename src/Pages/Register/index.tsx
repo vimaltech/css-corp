@@ -1,11 +1,15 @@
 import React from 'react';
 import CustomForm from 'components/CustomForm';
-import { RegisterFields, registerInitValues } from './registerIUtils';
+import {
+  RegisterFields,
+  RegisterInitValues,
+  registerInitValues,
+} from './registerIUtils';
 
 interface Props {}
 
 const Register = (props: Props) => {
-  const onSubmit = (values) => {
+  const onSubmit = (values: RegisterInitValues) => {
     console.log(values);
   };
 

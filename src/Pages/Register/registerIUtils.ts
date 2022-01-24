@@ -1,4 +1,7 @@
 import Input from 'components/Input';
+import Select from 'components/Select';
+import { GenderType } from 'types';
+import { FieldsProps } from 'types/fieldsProps';
 
 const checkRequired = (value: string) => {
   if (!value) {
@@ -7,17 +10,26 @@ const checkRequired = (value: string) => {
   return '';
 };
 
-export const registerInitValues = {
+export type RegisterInitValues = {
+  name: string;
+  gender: GenderType | '';
+  email: string;
+  password: string;
+  confirmPassword: string;
+};
+
+export const registerInitValues: RegisterInitValues = {
   name: '',
+  gender: '',
   email: '',
   password: '',
   confirmPassword: '',
 };
 
-export const RegisterFields = [
+export const RegisterFields: FieldsProps<RegisterInitValues>[] = [
   {
     name: 'name',
-    component: Input,
+    component: Input as React.ComponentType,
     placeholder: 'Name',
     validate: (value: string) => {
       return checkRequired(value);
@@ -25,8 +37,21 @@ export const RegisterFields = [
     isFirst: true,
   },
   {
+    name: 'gender',
+    component: Select as React.ComponentType,
+    placeholder: 'Please select gender',
+    validate: (value: string) => {
+      return checkRequired(value);
+    },
+    options: [
+      { value: GenderType.male, text: 'Male' },
+      { value: GenderType.female, text: 'Female' },
+      { value: GenderType.other, text: 'Other' },
+    ],
+  },
+  {
     name: 'email',
-    component: Input,
+    component: Input as React.ComponentType,
     placeholder: 'Email address',
     type: 'email',
     autoComplete: 'email',
@@ -36,7 +61,7 @@ export const RegisterFields = [
   },
   {
     name: 'password',
-    component: Input,
+    component: Input as React.ComponentType,
     placeholder: 'Password',
     type: 'password',
     autoComplete: 'new-password',
@@ -46,7 +71,7 @@ export const RegisterFields = [
   },
   {
     name: 'confirmPassword',
-    component: Input,
+    component: Input as React.ComponentType,
     placeholder: 'Confirm Password',
     type: 'password',
     autoComplete: 'new-password',

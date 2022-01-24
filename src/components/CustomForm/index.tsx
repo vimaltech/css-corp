@@ -1,13 +1,27 @@
 import Button, { BtnProps } from 'components/Button';
-import { Field, Form, Formik, FormikConfig } from 'formik';
+import {
+  Field,
+  FieldAttributes,
+  Form,
+  Formik,
+  FormikConfig,
+  FormikValues,
+} from 'formik';
 import React from 'react';
+import { FieldsProps } from 'types/fieldsProps';
 
-type Props = {
-  children: React.ReactNode;
+type Props<T> = {
+  children?: React.ReactNode;
   btnProps: BtnProps;
-};
+  fields: FieldsProps<T>[];
+} & FormikConfig<T>;
 
-const CustomForm = ({ fields, children, btnProps, ...props }: Props) => {
+const CustomForm = <T extends FormikValues>({
+  fields,
+  children,
+  btnProps,
+  ...props
+}: Props<T>) => {
   return (
     <Formik {...props}>
       {() => (
