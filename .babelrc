@@ -13,7 +13,8 @@
           "components": "./src/components",
           "Pages": "./src/Pages",
           "assets": "./src/assets",
-          "types": "./src/types"
+          "types": "./src/types",
+          "utils": "./src/utils"
         }
       }
     ],

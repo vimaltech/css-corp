@@ -1,4 +1,5 @@
 import React, { ComponentProps } from 'react';
+import cn from 'classnames';
 
 type ButtonProps = {
   children: string;
@@ -8,10 +9,17 @@ type ButtonProps = {
 export type BtnProps = ButtonProps &
   Omit<ComponentProps<'button'>, keyof ButtonProps>;
 
-const Button = ({ children, icon: Icon, ...props }: BtnProps) => {
+const Button = ({ children, disabled, icon: Icon, ...props }: BtnProps) => {
   return (
     <button
-      className="group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600 hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500"
+      className={cn(
+        'group relative w-full flex justify-center py-2 px-4 border border-transparent text-sm font-medium rounded-md text-white bg-indigo-600  focus:outline-none focus:ring-2 focus:ring-offset-2 ',
+        {
+          'bg-gray-400 hover:bg-none focus:ring-0': disabled,
+          'hover:bg-indigo-700 focus:ring-indigo-500': !disabled,
+        },
+      )}
+      onClick={disabled ? undefined : props.onClick}
       {...props}
     >
       {Icon && (

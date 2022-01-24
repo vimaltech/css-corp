@@ -7,6 +7,7 @@ export type LoginInitValuesProps = {
   email: string;
   password: string;
   remember_me: boolean;
+  serverError?: string;
 };
 
 export const LoginInitValues: LoginInitValuesProps = {

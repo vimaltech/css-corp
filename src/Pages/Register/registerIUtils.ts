@@ -16,6 +16,7 @@ export type RegisterInitValues = {
   email: string;
   password: string;
   confirmPassword: string;
+  serverError?: string;
 };
 
 export const registerInitValues: RegisterInitValues = {
