@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, memo } from 'react';
 import { FieldProps } from 'formik';
 import cn from 'classnames';
 import { BorderProps } from 'types/borderProps';
@@ -40,4 +40,4 @@ const Input = ({
   );
 };
 
-export default Input;
+export default memo(Input);

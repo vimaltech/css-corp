@@ -1,9 +1,17 @@
-import React from 'react';
-import { Outlet } from 'react-router-dom';
+import { AuthContext } from 'context/authContext';
+import React, { memo, useContext } from 'react';
+import { Navigate, Outlet, useLocation } from 'react-router-dom';
 
 interface Props {}
 
 const AuthLayout = (props: Props) => {
+  const { user } = useContext(AuthContext);
+  const location = useLocation();
+
+  if (user) {
+    return <Navigate to="/home" state={{ from: location }} replace />;
+  }
+
   return (
     <div className="min-h-full flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">
       <div className="max-w-md w-full space-y-8">

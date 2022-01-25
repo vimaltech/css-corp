@@ -1,7 +1,9 @@
-import React, { Fragment } from 'react';
+import React, { Fragment, useContext } from 'react';
 import cn from 'classnames';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
 import { BellIcon, MenuIcon, XIcon } from '@heroicons/react/outline';
+import { AuthContext } from 'context/authContext';
+import { Navigate, useLocation } from 'react-router-dom';
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
@@ -13,6 +15,13 @@ const navigation = [
 interface Props {}
 
 const MainLayout = (props: Props) => {
+  const { onLogout, user } = useContext(AuthContext);
+  const location = useLocation();
+
+  if (!user) {
+    return <Navigate to="/" state={{ from: location }} replace />;
+  }
+
   return (
     <Disclosure as="nav" className="bg-gray-800">
       {({ open }) => (
@@ -127,7 +136,8 @@ const MainLayout = (props: Props) => {
                       <Menu.Item>
                         {({ active }) => (
                           <a
-                            href="#"
+                            role="button"
+                            onClick={onLogout}
                             className={cn(
                               'block px-4 py-2 text-sm text-gray-700',
                               {

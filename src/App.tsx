@@ -1,11 +1,12 @@
+import { AuthContext } from 'context/authContext';
 import React, { lazy, Suspense } from 'react';
-import { Route, Routes } from 'react-router-dom';
+import { Route, Routes, useNavigate } from 'react-router-dom';
 import AuthLayout from './components/AuthLayout';
 import MainLayout from './components/MainLayout';
 import NotFound from './Pages/NotFound';
+import Login from './Pages/Login';
 // import Child1 from './Child1';
 
-const Login = lazy(() => import('./Pages/Login'));
 const Register = lazy(() => import('./Pages/Register'));
 const Home = lazy(() => import('./Pages/Home'));
 

@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, memo } from 'react';
 import { FieldProps } from 'formik';
 
 type Props = {} & FieldProps & ComponentProps<'label'>;
@@ -21,4 +21,4 @@ const Checkbox = ({ field, ...props }: Props) => {
   );
 };
 
-export default Checkbox;
+export default memo(Checkbox);

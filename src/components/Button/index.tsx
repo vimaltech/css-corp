@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, memo } from 'react';
 import cn from 'classnames';
 
 type ButtonProps = {
@@ -32,4 +32,4 @@ const Button = ({ children, disabled, icon: Icon, ...props }: BtnProps) => {
   );
 };
 
-export default Button;
+export default memo(Button);

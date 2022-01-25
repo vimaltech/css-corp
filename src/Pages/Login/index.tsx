@@ -1,5 +1,5 @@
 import React, { useContext, useMemo } from 'react';
-import { Field } from 'formik';
+import { FastField } from 'formik';
 import Checkbox from 'components/Checkbox';
 import Link from 'components/Link';
 import { LoginFields, LoginInitValues } from './loginUtils';
@@ -26,9 +26,9 @@ const Login = (props: Props) => {
       btnProps={btnProps}
     >
       <div className="flex items-center justify-between">
-        <Field name="remember_me" component={Checkbox}>
+        <FastField name="remember_me" component={Checkbox}>
           Remember Me
-        </Field>
+        </FastField>
         <Link href="#">Forgot password?</Link>
       </div>
     </CustomForm>

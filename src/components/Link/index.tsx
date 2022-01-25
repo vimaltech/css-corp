@@ -1,4 +1,4 @@
-import React, { ComponentProps } from 'react';
+import React, { ComponentProps, memo } from 'react';
 
 type AnchorProps = {
   children: string;
@@ -19,4 +19,4 @@ const Link = ({ children, ...props }: Props) => {
   );
 };
 
-export default Link;
+export default memo(Link);

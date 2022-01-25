@@ -1,12 +1,5 @@
 import Button, { BtnProps } from 'components/Button';
-import {
-  Field,
-  FieldAttributes,
-  Form,
-  Formik,
-  FormikConfig,
-  FormikValues,
-} from 'formik';
+import { FastField, Form, Formik, FormikConfig, FormikValues } from 'formik';
 import React, { memo } from 'react';
 import { FieldsProps } from 'types/fieldsProps';
 
@@ -35,7 +28,7 @@ const CustomForm = <T extends FormikValues>({
           )}
           <div className="rounded-md shadow-sm -space-y-px">
             {fields.map((x) => (
-              <Field key={x.name} {...x} />
+              <FastField key={x.name} {...x} />
             ))}
           </div>
           {children}

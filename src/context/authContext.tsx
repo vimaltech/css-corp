@@ -47,9 +47,9 @@ export const AuthProvider = ({ children }: Props) => {
         const { serverError, ...rest } = values;
         const res = await axiosInstance.post<AuthResponse>('login', rest);
         formikHelpers.resetForm();
-        setUser(res.data);
         sessionStorage.setItem('@app/token', JSON.stringify(res.data));
         navigate('/home', { replace: true });
+        setUser(res.data);
       } catch (error) {
         let message = 'Something went wrong. Try after somtime';
         if (error instanceof Error) {
@@ -70,9 +70,9 @@ export const AuthProvider = ({ children }: Props) => {
         const { confirmPassword, serverError, ...rest } = values;
         const res = await axiosInstance.post<AuthResponse>('register', rest);
         formikHelpers.resetForm();
-        setUser(res.data);
         sessionStorage.setItem('@app/token', JSON.stringify(res.data));
         navigate('/home', { replace: true });
+        setUser(res.data);
       } catch (error) {
         let message = 'Something went wrong. Try after somtime';
         if (error instanceof Error) {
@@ -86,6 +86,7 @@ export const AuthProvider = ({ children }: Props) => {
 
   const onLogout = useCallback(() => {
     sessionStorage.removeItem('@app/token');
+    navigate('/', { replace: true });
     setUser(undefined);
   }, []);
 
