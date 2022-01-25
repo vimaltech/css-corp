@@ -1,3 +1,4 @@
+import { AuthProvider } from 'context/authContext';
 import React from 'react';
 import ReactDOM from 'react-dom';
 import { BrowserRouter } from 'react-router-dom';
@@ -7,7 +8,9 @@ import './root.css';
 
 ReactDOM.render(
   <BrowserRouter>
-    <App />
+    <AuthProvider>
+      <App />
+    </AuthProvider>
   </BrowserRouter>,
   document.getElementById('root'),
 );

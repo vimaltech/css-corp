@@ -10,6 +10,13 @@ const checkRequired = (value: string) => {
   return '';
 };
 
+const compare = (val1: string, val2: string) => {
+  if (val1 !== val2) {
+    return 'Password and confirm password should match.';
+  }
+  return '';
+};
+
 export type RegisterInitValues = {
   name: string;
   gender: GenderType | '';

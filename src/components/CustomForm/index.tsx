@@ -7,7 +7,7 @@ import {
   FormikConfig,
   FormikValues,
 } from 'formik';
-import React from 'react';
+import React, { memo } from 'react';
 import { FieldsProps } from 'types/fieldsProps';
 
 type Props<T> = {
@@ -22,6 +22,8 @@ const CustomForm = <T extends FormikValues>({
   btnProps,
   ...props
 }: Props<T>) => {
+  console.log('hello custom form');
+
   return (
     <Formik {...props}>
       {({ isValid, dirty, isSubmitting, errors }) => (
@@ -49,4 +51,4 @@ const CustomForm = <T extends FormikValues>({
   );
 };
 
-export default CustomForm;
+export default memo(CustomForm);

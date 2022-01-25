@@ -1,49 +1,29 @@
-import React from 'react';
-import { Field, FormikHelpers } from 'formik';
+import React, { useContext, useMemo } from 'react';
+import { Field } from 'formik';
 import Checkbox from 'components/Checkbox';
 import Link from 'components/Link';
-import {
-  LoginFields,
-  LoginInitValues,
-  LoginInitValuesProps,
-} from './loginUtils';
+import { LoginFields, LoginInitValues } from './loginUtils';
 import CustomForm from 'components/CustomForm';
-import axiosInstance from 'utils/axios';
-import { useNavigate } from 'react-router-dom';
-import { AuthResponse } from 'types/authResponse';
+import { AuthContext } from 'context/authContext';
 
 interface Props {}
 
 const Login = (props: Props) => {
-  const navigate = useNavigate();
+  const { onLogin } = useContext(AuthContext);
 
-  const onSubmit = async (
-    values: LoginInitValuesProps,
-    formikHelpers: FormikHelpers<LoginInitValuesProps>,
-  ) => {
-    try {
-      const { serverError, ...rest } = values;
-      const res = await axiosInstance.post<AuthResponse>('login', rest);
-      formikHelpers.resetForm();
-      sessionStorage.setItem('@app/token', res.data.accessToken);
-      navigate('/home');
-    } catch (error) {
-      let message = 'Something went wrong. Try after somtime';
-      if (error instanceof Error) {
-        message = error.message;
-      }
-      formikHelpers.setErrors({ serverError: message });
-    }
-  };
+  const btnProps = useMemo(
+    () => ({
+      children: 'Sign In',
+    }),
+    [],
+  );
 
   return (
     <CustomForm
       initialValues={LoginInitValues}
       fields={LoginFields}
-      onSubmit={onSubmit}
-      btnProps={{
-        children: 'Sign in',
-      }}
+      onSubmit={onLogin}
+      btnProps={btnProps}
     >
       <div className="flex items-center justify-between">
         <Field name="remember_me" component={Checkbox}>
