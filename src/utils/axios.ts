@@ -1,4 +1,5 @@
 import axios, { Axios } from 'axios';
+import { AuthResponse } from 'types/authResponse';
 
 const axiosInstance = axios.create({
   baseURL: 'http://localhost:3000',
@@ -11,6 +12,14 @@ const axiosInstance = axios.create({
 axiosInstance.interceptors.request.use(
   function (config) {
     // Do something before request is sent
+    const token = sessionStorage.getItem('@app/token');
+    if (token) {
+      const data: AuthResponse = JSON.parse(token);
+      config.headers = {
+        ...config.headers,
+        Authorization: `Bearer ${data.accessToken}`,
+      };
+    }
     return config;
   },
   function (error) {
@@ -29,8 +38,15 @@ axiosInstance.interceptors.response.use(
   function (error) {
     // Any status codes that falls outside the range of 2xx cause this function to trigger
     // Do something with response error
+
     if (axios.isAxiosError(error)) {
-      return Promise.reject(new Error(error.response?.data));
+      let message = error.response?.data;
+      console.log('error.response?.status', error.response?.status);
+
+      if (error.response?.status === 401) {
+        message = '401';
+      }
+      return Promise.reject(new Error(message));
     } else {
       return Promise.reject(error);
     }

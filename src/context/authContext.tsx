@@ -5,6 +5,7 @@ import React, {
   createContext,
   ReactElement,
   useCallback,
+  useEffect,
   useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
@@ -37,6 +38,13 @@ type Props = {
 export const AuthProvider = ({ children }: Props) => {
   const [user, setUser] = useState<AuthResponse>();
   const navigate = useNavigate();
+
+  useEffect(() => {
+    const token = sessionStorage.getItem('@app/token');
+    if (token) {
+      setUser(JSON.parse(token));
+    }
+  }, []);
 
   const onLogin = useCallback(
     async (
