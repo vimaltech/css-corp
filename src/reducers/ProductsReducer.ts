@@ -17,7 +17,7 @@ type LoadDataSuccess = {
 };
 
 type ChangeCartSuccess = {
-  type: 'ADD_CART_SUCCESS' | 'UPDATE_CART_SUCCESS';
+  type: 'ADD_CART_SUCCESS' | 'UPDATE_CART_SUCCESS' | 'DELETE_CART_SUCCESS';
   cartItem: CartResponse;
 };
 
@@ -40,6 +40,12 @@ export default (state: ProductReducerType, action: ProductActionType) => {
           }
           return item;
         }),
+      };
+
+    case 'DELETE_CART_SUCCESS':
+      return {
+        ...state,
+        cart: state.cart.filter((item) => item.id !== action.cartItem.id),
       };
 
     default:

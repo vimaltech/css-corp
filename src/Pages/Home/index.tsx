@@ -9,6 +9,7 @@ const Home = (props: Props) => {
     loadData,
     handleCart,
     updateCartItem,
+    deleteCartItem,
     cartState: { products, cart },
   } = useContext(CartContext);
 
@@ -26,6 +27,7 @@ const Home = (props: Props) => {
             handleCart={handleCart}
             cartItem={cartItem}
             updateCartItem={updateCartItem}
+            deleteCartItem={deleteCartItem}
             {...product}
           />
         );

@@ -14,6 +14,7 @@ type CartContextType = {
   loadData: () => Promise<void>;
   handleCart: (productId: any) => Promise<void>;
   updateCartItem: (cartItem: CartResponse) => Promise<void>;
+  deleteCartItem: (cartItem: CartResponse) => Promise<void>;
 };
 
 export const CartContext = createContext<CartContextType>(
@@ -70,14 +71,26 @@ export const CartProvider = ({ children }: ProviderProps) => {
     } catch (error) {}
   }, []);
 
+  const deleteCartItem = useCallback(async (cartItem: CartResponse) => {
+    try {
+      // delete data from database
+      await axiosInstance.delete<CartResponse>(`660/cart/${cartItem.id}`);
+      dispatch({
+        type: 'DELETE_CART_SUCCESS',
+        cartItem,
+      });
+    } catch (error) {}
+  }, []);
+
   const value = useMemo(
     () => ({
       cartState,
       loadData,
       handleCart,
       updateCartItem,
+      deleteCartItem,
     }),
-    [cartState, loadData, handleCart, updateCartItem],
+    [cartState, loadData, handleCart, updateCartItem, deleteCartItem],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

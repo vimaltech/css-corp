@@ -8,6 +8,7 @@ type Props = {
   cartItem: CartResponse | undefined;
   handleCart: (productId: number) => void;
   updateCartItem: (cartItem: CartResponse) => void;
+  deleteCartItem: (cartItem: CartResponse) => void;
 } & ProductResponse;
 
 const Product = ({
@@ -21,6 +22,7 @@ const Product = ({
   handleCart,
   cartItem,
   updateCartItem,
+  deleteCartItem,
 }: Props) => {
   console.log('Product component');
 
@@ -74,6 +76,7 @@ const Product = ({
                 </select>
                 <a
                   role="button"
+                  onClick={() => deleteCartItem(cartItem)}
                   className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
                 >
                   remove
