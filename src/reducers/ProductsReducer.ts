@@ -12,27 +12,35 @@ export const productsInitialState = {
 };
 
 type LoadDataSuccess = {
-  type?: 'LOAD_DATA_SUCCESS';
-  payload?: ProductReducerType;
+  type: 'LOAD_DATA_SUCCESS';
+  data: ProductReducerType;
 };
 
-// type AddCartSuccess = {
-//   type?: 'ADD_CART_SUCCESS';
-//   payload?: CartResponse;
-// };
+type ChangeCartSuccess = {
+  type: 'ADD_CART_SUCCESS' | 'UPDATE_CART_SUCCESS';
+  cartItem: CartResponse;
+};
 
-type ProductActionType = LoadDataSuccess;
+type ProductActionType = LoadDataSuccess | ChangeCartSuccess;
 
-export default (
-  state: ProductReducerType,
-  { type, payload }: ProductActionType,
-) => {
-  switch (type) {
+export default (state: ProductReducerType, action: ProductActionType) => {
+  switch (action.type) {
     case 'LOAD_DATA_SUCCESS':
-      return { ...state, ...payload };
+      return { ...state, ...action.data };
 
-    // case 'ADD_CART_SUCCESS':
-    //   return { ...state, cart: [...state.cart, payload] };
+    case 'ADD_CART_SUCCESS':
+      return { ...state, cart: [...state.cart, action.cartItem] };
+
+    case 'UPDATE_CART_SUCCESS':
+      return {
+        ...state,
+        cart: state.cart.map((item) => {
+          if (item.id === action.cartItem.id) {
+            return action.cartItem;
+          }
+          return item;
+        }),
+      };
 
     default:
       return state;

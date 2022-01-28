@@ -1,3 +1,5 @@
+import { ReactElement } from 'react';
+
 export type SelectOptions = {
   value: string;
   text: string;
@@ -8,3 +10,7 @@ export enum GenderType {
   female = 'female',
   other = 'other',
 }
+
+export type ProviderProps = {
+  children: ReactElement;
+};

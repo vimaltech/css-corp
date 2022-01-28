@@ -9,6 +9,7 @@ import React, {
   useState,
 } from 'react';
 import { useNavigate } from 'react-router-dom';
+import { ProviderProps } from 'types';
 import { AuthResponse } from 'types/authResponse';
 import axiosInstance from 'utils/axios';
 
@@ -31,11 +32,7 @@ export const AuthContext = createContext<AuthContextType>({
   onLogout: () => {},
 });
 
-type Props = {
-  children: ReactElement;
-};
-
-export const AuthProvider = ({ children }: Props) => {
+export const AuthProvider = ({ children }: ProviderProps) => {
   const [user, setUser] = useState<AuthResponse>();
   const navigate = useNavigate();
 

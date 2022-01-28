@@ -7,6 +7,7 @@ import { CartResponse } from 'types/CartResponse';
 type Props = {
   cartItem: CartResponse | undefined;
   handleCart: (productId: number) => void;
+  updateCartItem: (cartItem: CartResponse) => void;
 } & ProductResponse;
 
 const Product = ({
@@ -19,6 +20,7 @@ const Product = ({
   rating,
   handleCart,
   cartItem,
+  updateCartItem,
 }: Props) => {
   console.log('Product component');
 
@@ -52,19 +54,46 @@ const Product = ({
 
           <section aria-labelledby="options-heading" className="mt-10">
             <h3 id="options-heading">{category}</h3>
-
-            <button
-              type="button"
-              className={cn(
-                'mt-6 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white hover:bg-indigo-700 focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
-                {
-                  'bg-gray-600': !!cartItem,
-                },
-              )}
-              onClick={() => handleCart(id)}
-            >
-              Add to bag
-            </button>
+            {cartItem ? (
+              <div className="flex items-center justify-between">
+                <select
+                  value={cartItem.quantity}
+                  onChange={(event) =>
+                    updateCartItem({
+                      ...cartItem,
+                      quantity: Number(event.target.value),
+                    })
+                  }
+                  className="mt-1 block w-1/2 py-2 px-3 border border-gray-300 bg-white rounded-md shadow-sm focus:outline-none focus:ring-indigo-500 focus:border-indigo-500 sm:text-sm"
+                >
+                  {[...Array(10).keys()].map((x) => (
+                    <option key={x} value={x + 1}>
+                      {x + 1}
+                    </option>
+                  ))}
+                </select>
+                <a
+                  role="button"
+                  className="ml-3 text-sm font-medium text-indigo-600 hover:text-indigo-500"
+                >
+                  remove
+                </a>
+              </div>
+            ) : (
+              <button
+                type="button"
+                className={cn(
+                  'mt-6 w-full bg-indigo-600 border border-transparent rounded-md py-3 px-8 flex items-center justify-center text-base font-medium text-white  focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-indigo-500',
+                  {
+                    'bg-gray-600 hover:bg-none focus:right-0': !!cartItem,
+                    'hover:bg-indigo-700 focus:ring-indigo-500': !cartItem,
+                  },
+                )}
+                onClick={() => handleCart(id)}
+              >
+                Add to bag
+              </button>
+            )}
           </section>
         </div>
       </div>
