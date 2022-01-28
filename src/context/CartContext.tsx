@@ -31,6 +31,9 @@ export const CartProvider = ({ children }: ProviderProps) => {
 
   const loadData = useCallback(async () => {
     try {
+      dispatch({
+        type: 'LOAD_DATA_REQUEST',
+      });
       const res = await Promise.all([
         axiosInstance.get<ProductResponse[]>('660/products'),
         axiosInstance.get<CartResponse[]>('660/cart'),
@@ -46,6 +49,9 @@ export const CartProvider = ({ children }: ProviderProps) => {
 
   const handleCart = useCallback(async (productId) => {
     try {
+      dispatch({
+        type: 'ADD_CART_REQUEST',
+      });
       const res = await axiosInstance.post<CartResponse>('660/cart', {
         quantity: 1,
         productId,
@@ -60,6 +66,9 @@ export const CartProvider = ({ children }: ProviderProps) => {
 
   const updateCartItem = useCallback(async (cartItem: CartResponse) => {
     try {
+      dispatch({
+        type: 'UPDATE_CART_REQUEST',
+      });
       const res = await axiosInstance.put<CartResponse>(
         `660/cart/${cartItem.id}`,
         cartItem,
@@ -73,7 +82,9 @@ export const CartProvider = ({ children }: ProviderProps) => {
 
   const deleteCartItem = useCallback(async (cartItem: CartResponse) => {
     try {
-      // delete data from database
+      dispatch({
+        type: 'DELETE_CART_REQUEST',
+      });
       await axiosInstance.delete<CartResponse>(`660/cart/${cartItem.id}`);
       dispatch({
         type: 'DELETE_CART_SUCCESS',

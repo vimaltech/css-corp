@@ -10,7 +10,7 @@ const Home = (props: Props) => {
     handleCart,
     updateCartItem,
     deleteCartItem,
-    cartState: { products, cart },
+    cartState: { products, cart, loading },
   } = useContext(CartContext);
 
   useEffect(() => {
@@ -19,6 +19,11 @@ const Home = (props: Props) => {
 
   return (
     <>
+      {loading && (
+        <div className="flex justify-center items-center h-screen w-full absolute z-10 bg-gray-600 opacity-60">
+          <h1 className="text-white text-4xl">Loading...</h1>
+        </div>
+      )}
       {products.map((product) => {
         const cartItem = cart.find((x) => x.productId === product.id);
         return (

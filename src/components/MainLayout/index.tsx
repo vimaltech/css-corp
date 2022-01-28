@@ -1,12 +1,7 @@
 import React, { Fragment, useContext } from 'react';
 import cn from 'classnames';
 import { Disclosure, Menu, Transition } from '@headlessui/react';
-import {
-  BellIcon,
-  MenuIcon,
-  XIcon,
-  ShoppingBagIcon,
-} from '@heroicons/react/outline';
+import { MenuIcon, XIcon, ShoppingBagIcon } from '@heroicons/react/outline';
 import { AuthContext } from 'context/authContext';
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import { CartContext } from 'context/CartContext';
