@@ -4,13 +4,15 @@ import ProductsReducer, {
   ProductReducerType,
   productsInitialState,
 } from 'reducers/ProductsReducer';
+import rootReducer, { RootInitialState } from 'reducers/rootReducer';
 import { ProviderProps } from 'types';
 import { CartResponse } from 'types/CartResponse';
 import { ProductResponse } from 'types/ProductResponse';
 import axiosInstance from 'utils/axios';
 
 type CartContextType = {
-  cartState: ProductReducerType;
+  products: ProductReducerType;
+  loading: any;
   loadData: () => Promise<void>;
   handleCart: (productId: any) => Promise<void>;
   updateCartItem: (cartItem: CartResponse) => Promise<void>;
@@ -22,9 +24,9 @@ export const CartContext = createContext<CartContextType>(
 );
 
 export const CartProvider = ({ children }: ProviderProps) => {
-  const [cartState, dispatch] = useReducer(
-    ProductsReducer,
-    productsInitialState,
+  const [{ products, loading }, dispatch] = useReducer(
+    rootReducer,
+    RootInitialState,
   );
 
   const handleError = useError();
@@ -51,6 +53,7 @@ export const CartProvider = ({ children }: ProviderProps) => {
     try {
       dispatch({
         type: 'ADD_CART_REQUEST',
+        processId: productId,
       });
       const res = await axiosInstance.post<CartResponse>('660/cart', {
         quantity: 1,
@@ -60,14 +63,18 @@ export const CartProvider = ({ children }: ProviderProps) => {
       dispatch({
         type: 'ADD_CART_SUCCESS',
         cartItem: res.data,
+        processId: productId,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   const updateCartItem = useCallback(async (cartItem: CartResponse) => {
     try {
       dispatch({
         type: 'UPDATE_CART_REQUEST',
+        processId: cartItem.productId,
       });
       const res = await axiosInstance.put<CartResponse>(
         `660/cart/${cartItem.id}`,
@@ -76,32 +83,40 @@ export const CartProvider = ({ children }: ProviderProps) => {
       dispatch({
         type: 'UPDATE_CART_SUCCESS',
         cartItem: res.data,
+        processId: cartItem.productId,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   const deleteCartItem = useCallback(async (cartItem: CartResponse) => {
     try {
       dispatch({
         type: 'DELETE_CART_REQUEST',
+        processId: cartItem.productId,
       });
       await axiosInstance.delete<CartResponse>(`660/cart/${cartItem.id}`);
       dispatch({
         type: 'DELETE_CART_SUCCESS',
         cartItem,
+        processId: cartItem.productId,
       });
-    } catch (error) {}
+    } catch (error) {
+      console.error(error);
+    }
   }, []);
 
   const value = useMemo(
     () => ({
-      cartState,
+      products,
       loadData,
       handleCart,
       updateCartItem,
       deleteCartItem,
+      loading,
     }),
-    [cartState, loadData, handleCart, updateCartItem, deleteCartItem],
+    [products, loadData, handleCart, updateCartItem, deleteCartItem, loading],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

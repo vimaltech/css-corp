@@ -272,13 +272,13 @@
   ],
   "cart": [
     {
-      "quantity": 2,
+      "quantity": 1,
       "productId": 2,
       "id": 2
     },
     {
       "quantity": 1,
-      "productId": 3,
+      "productId": 1,
       "id": 3
     },
     {
@@ -288,48 +288,13 @@
     },
     {
       "quantity": 1,
-      "productId": 5,
+      "productId": 14,
       "id": 5
     },
     {
       "quantity": 1,
-      "productId": 7,
+      "productId": 15,
       "id": 6
-    },
-    {
-      "quantity": 1,
-      "productId": 6,
-      "id": 7
-    },
-    {
-      "quantity": 1,
-      "productId": 8,
-      "id": 8
-    },
-    {
-      "quantity": 1,
-      "productId": 9,
-      "id": 9
-    },
-    {
-      "quantity": 1,
-      "productId": 11,
-      "id": 10
-    },
-    {
-      "quantity": 6,
-      "productId": 1,
-      "id": 11
-    },
-    {
-      "quantity": 1,
-      "productId": 10,
-      "id": 12
-    },
-    {
-      "quantity": 1,
-      "productId": 12,
-      "id": 13
     }
   ]
 }
