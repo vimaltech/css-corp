@@ -13,6 +13,7 @@ import axiosInstance from 'utils/axios';
 type CartContextType = {
   products: ProductReducerType;
   loading: any;
+  error: any;
   loadData: () => Promise<void>;
   handleCart: (productId: any) => Promise<void>;
   updateCartItem: (cartItem: CartResponse) => Promise<void>;
@@ -24,7 +25,7 @@ export const CartContext = createContext<CartContextType>(
 );
 
 export const CartProvider = ({ children }: ProviderProps) => {
-  const [{ products, loading }, dispatch] = useReducer(
+  const [{ products, loading, error }, dispatch] = useReducer(
     rootReducer,
     RootInitialState,
   );
@@ -45,6 +46,7 @@ export const CartProvider = ({ children }: ProviderProps) => {
         data: { cart: res[1].data, products: res[0].data },
       });
     } catch (error) {
+      dispatch({ type: 'LOAD_DATA_FAIL', error: error as Error });
       handleError(error);
     }
   }, [handleError]);
@@ -66,6 +68,11 @@ export const CartProvider = ({ children }: ProviderProps) => {
         processId: productId,
       });
     } catch (error) {
+      dispatch({
+        type: 'ADD_CART_FAIL',
+        error: error as Error,
+        processId: productId,
+      });
       console.error(error);
     }
   }, []);
@@ -86,6 +93,11 @@ export const CartProvider = ({ children }: ProviderProps) => {
         processId: cartItem.productId,
       });
     } catch (error) {
+      dispatch({
+        type: 'UPDATE_CART_FAIL',
+        error: error as Error,
+        processId: cartItem.productId,
+      });
       console.error(error);
     }
   }, []);
@@ -103,6 +115,11 @@ export const CartProvider = ({ children }: ProviderProps) => {
         processId: cartItem.productId,
       });
     } catch (error) {
+      dispatch({
+        type: 'DELETE_CART_FAIL',
+        error: error as Error,
+        processId: cartItem.productId,
+      });
       console.error(error);
     }
   }, []);
@@ -115,8 +132,17 @@ export const CartProvider = ({ children }: ProviderProps) => {
       updateCartItem,
       deleteCartItem,
       loading,
+      error,
     }),
-    [products, loadData, handleCart, updateCartItem, deleteCartItem, loading],
+    [
+      products,
+      loadData,
+      handleCart,
+      updateCartItem,
+      deleteCartItem,
+      loading,
+      error,
+    ],
   );
 
   return <CartContext.Provider value={value}>{children}</CartContext.Provider>;

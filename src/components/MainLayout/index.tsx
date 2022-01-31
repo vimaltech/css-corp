@@ -5,6 +5,7 @@ import { MenuIcon, XIcon, ShoppingBagIcon } from '@heroicons/react/outline';
 import { AuthContext } from 'context/authContext';
 import { Navigate, useLocation, Outlet } from 'react-router-dom';
 import { CartContext } from 'context/CartContext';
+import SnackBar from 'components/SnackBar';
 
 const navigation = [
   { name: 'Dashboard', href: '#', current: true },
@@ -24,7 +25,7 @@ const MainLayout = (props: Props) => {
   }
 
   return (
-    <>
+    <div className="relative min-h-screen">
       <Disclosure as="nav" className="bg-gray-800">
         {({ open }) => (
           <>
@@ -77,18 +78,20 @@ const MainLayout = (props: Props) => {
                 <div className="absolute inset-y-0 right-0 flex items-center pr-2 sm:static sm:inset-auto sm:ml-6 sm:pr-0">
                   <CartContext.Consumer>
                     {({ products: { cart } }) => (
-                      <button
-                        type="button"
-                        className="flex items-center bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
-                      >
-                        <ShoppingBagIcon
-                          className="h-6 w-6"
-                          aria-hidden="true"
-                        />
-                        <span className="mx-2">
-                          {cart.reduce((p, c) => p + c.quantity, 0)}
-                        </span>
-                      </button>
+                      <>
+                        <button
+                          type="button"
+                          className="flex items-center bg-gray-800 p-1 rounded-full text-gray-400 hover:text-white focus:outline-none focus:ring-2 focus:ring-offset-2 focus:ring-offset-gray-800 focus:ring-white"
+                        >
+                          <ShoppingBagIcon
+                            className="h-6 w-6"
+                            aria-hidden="true"
+                          />
+                          <span className="mx-2">
+                            {cart.reduce((p, c) => p + c.quantity, 0)}
+                          </span>
+                        </button>
+                      </>
                     )}
                   </CartContext.Consumer>
 
@@ -191,7 +194,20 @@ const MainLayout = (props: Props) => {
         )}
       </Disclosure>
       <Outlet />
-    </>
+      <CartContext.Consumer>
+        {({ error }) => {
+          console.log(error);
+
+          return (
+            <>
+              {Object.keys(error).map((x) => (
+                <SnackBar key={x} />
+              ))}
+            </>
+          );
+        }}
+      </CartContext.Consumer>
+    </div>
   );
 };
 

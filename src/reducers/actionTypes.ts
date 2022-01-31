@@ -17,7 +17,7 @@ export type ErrorActions = {
     | 'UPDATE_CART_FAIL'
     | 'DELETE_CART_FAIL';
   processId?: number;
-  error?: Error;
+  error: Error;
 };
 
 export type LoadDataSuccess = {
