@@ -195,14 +195,30 @@ const MainLayout = (props: Props) => {
       </Disclosure>
       <Outlet />
       <CartContext.Consumer>
-        {({ error }) => {
-          console.log(error);
-
+        {({ error, clearError }) => {
           return (
             <>
-              {Object.keys(error).map((x) => (
-                <SnackBar key={x} />
-              ))}
+              {Object.keys(error)
+                .slice(0, 3)
+                .map((x, index) => {
+                  const title = x
+                    .replace(/_\d+/g, '')
+                    .split('_')
+                    .map(
+                      (x) => `${x[0].toUpperCase()}${x.slice(1).toLowerCase()}`,
+                    )
+                    .join(' ');
+
+                  return (
+                    <SnackBar
+                      key={x}
+                      index={index}
+                      title={title}
+                      message={error[x].message}
+                      onCancel={() => clearError(x)}
+                    />
+                  );
+                })}
             </>
           );
         }}

@@ -40,8 +40,9 @@ axiosInstance.interceptors.response.use(
     // Do something with response error
 
     if (axios.isAxiosError(error)) {
-      let message = error.response?.data;
-      console.log('error.response?.status', error.response?.status);
+      console.log('axios Error', error);
+
+      let message = error.response?.data || error.message;
 
       if (error.response?.status === 401) {
         message = '401';

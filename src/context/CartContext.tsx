@@ -15,6 +15,7 @@ type CartContextType = {
   loading: any;
   error: any;
   loadData: () => Promise<void>;
+  clearError: (key: string) => void;
   handleCart: (productId: any) => Promise<void>;
   updateCartItem: (cartItem: CartResponse) => Promise<void>;
   deleteCartItem: (cartItem: CartResponse) => Promise<void>;
@@ -46,6 +47,8 @@ export const CartProvider = ({ children }: ProviderProps) => {
         data: { cart: res[1].data, products: res[0].data },
       });
     } catch (error) {
+      console.log('error', error);
+
       dispatch({ type: 'LOAD_DATA_FAIL', error: error as Error });
       handleError(error);
     }
@@ -124,6 +127,14 @@ export const CartProvider = ({ children }: ProviderProps) => {
     }
   }, []);
 
+  const clearError = useCallback((key: string) => {
+    dispatch({
+      type: 'CLEAR_ERROR',
+      key: key,
+      error: new Error(''),
+    });
+  }, []);
+
   const value = useMemo(
     () => ({
       products,
@@ -133,6 +144,7 @@ export const CartProvider = ({ children }: ProviderProps) => {
       deleteCartItem,
       loading,
       error,
+      clearError,
     }),
     [
       products,
@@ -142,6 +154,7 @@ export const CartProvider = ({ children }: ProviderProps) => {
       deleteCartItem,
       loading,
       error,
+      clearError,
     ],
   );
 

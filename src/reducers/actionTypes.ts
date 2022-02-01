@@ -15,9 +15,11 @@ export type ErrorActions = {
     | 'LOAD_DATA_FAIL'
     | 'ADD_CART_FAIL'
     | 'UPDATE_CART_FAIL'
-    | 'DELETE_CART_FAIL';
+    | 'DELETE_CART_FAIL'
+    | 'CLEAR_ERROR';
   processId?: number;
   error: Error;
+  key?: string;
 };
 
 export type LoadDataSuccess = {
