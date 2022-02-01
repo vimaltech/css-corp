@@ -1,3 +1,4 @@
+import { User } from 'types/authResponse';
 import { CartResponse } from 'types/CartResponse';
 import { ProductReducerType } from './ProductsReducer';
 
@@ -36,8 +37,13 @@ export type ChangeCartSuccess = {
 
 export type RootState = {
   products: ProductReducerType;
+  user: User;
   error: any;
   loading: any;
+};
+
+export type UserActionType = {
+  type: '';
 };
 
 export type RootAction =

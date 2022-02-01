@@ -1,6 +1,6 @@
 import { GenderType } from 'types';
 
-type User = {
+export type User = {
   email: string;
   name: string;
   gender: GenderType;

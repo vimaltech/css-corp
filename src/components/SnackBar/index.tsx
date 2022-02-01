@@ -1,4 +1,4 @@
-import React, { useEffect } from 'react';
+import React, { useEffect, useMemo } from 'react';
 
 type Props = {
   index: number;
@@ -8,14 +8,16 @@ type Props = {
 };
 
 const SnackBar = ({ message, title, onCancel, index }: Props) => {
+  // component DId mount
   useEffect(() => {
     const timer = setTimeout(onCancel, 5000);
+    // component will unmount
     return () => {
       clearInterval(timer);
     };
   }, []);
 
-  const bottom = `${index * 56}px`;
+  const bottom = useMemo(() => `${index * 56}px`, [index]);
 
   return (
     <div
